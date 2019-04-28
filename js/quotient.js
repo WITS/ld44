@@ -78,7 +78,7 @@ class QuotientState {
 			if (cat === 'cast') {
 				slice._next = itemSlices;
 			} else if (items.length === 1) {
-				// Don't propmt the player to pick an item
+				// Don't prompt the player to pick an item
 				slice.item = items[0];
 			} else {
 				// Give the player the choice of each item in the category
@@ -117,9 +117,13 @@ class QuotientState {
 		for (let slice of slices) {
 			this.slicesElement.append(slice.element);
 			Transition.animate(slice.element, {
-				transform: {
-					from: `translateY(300px)`,
-					to: `none`
+				from: {
+					transform: `translateY(300px)`,
+					opacity: 0
+				},
+				to: {
+					transform: `none`,
+					opacity: 1
 				}
 			}, dur);
 			dur += 100;
@@ -127,7 +131,7 @@ class QuotientState {
 	}
 
 	// Adds a slice to the current intent array
-	addSlice(slice) {
+	async addSlice(slice) {
 		// Keep track of the slices at the time that this slice was selected
 		slice.siblings = this.slices;
 		this.intent.push(slice);
@@ -136,7 +140,27 @@ class QuotientState {
 		Transition.from(slice.token, Transition.snapshot(slice.textElement), 500, {
 			aspectRatio: 'height'
 		});
+		// If the token's text is longer than the slice's
+		if (slice.description.length > slice.text.length &&
+			slice.description.indexOf(slice.text) === 0) {
+			// Fade in the extra words
+			slice.token.empty();
+			slice.token.append(slice.text);
+			const fade = $new('span')
+				.text(slice.description.substr(slice.text.length))
+				.element();
+			slice.token.append(fade);
+			Transition.animate(fade, {
+				opacity: {
+					from: 0,
+					to: 1
+				}
+			}, 500);
+		}
+		// Remove the current slices
+		this.slicesElement.empty();
 		// Update the currently visible slices
+		await sleep(250);
 		this.showSlices(slice.next);
 	}
 

@@ -63,6 +63,11 @@ document.on('DOMContentLoaded', () => {
 	}));
 });
 
+// Sleeps for n milliseconds
+function sleep(n = 0) {
+	return new Promise(r => setTimeout(() => r(), n));
+}
+
 // Rolls an n-sided die (returns a random int in the range [1, n])
 function roll(n = 100) {
 	return 1 + Math.floor(Math.random() * n);
