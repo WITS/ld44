@@ -64,7 +64,7 @@ class QuotientState {
 				description: cat !== 'cast'
 					? `${cat} the ${other.name}`
 					: cat,
-				isEnd: true
+				isEnd: cat !== 'cast'
 			});
 			slices.push(slice);
 			let withSlice = null, inSlice = null;
@@ -225,7 +225,9 @@ class Slice {
 		// Slices that can be added after this one
 		this._next = json.next || [];
 		// Whether this slice can be the end of the intent
-		this.isEnd = json.isEnd || this.next.length === 0;
+		this.isEnd = json.isEnd != null
+			? json.isEnd
+			: this.next.length === 0;
 	}
 
 	get next() {
