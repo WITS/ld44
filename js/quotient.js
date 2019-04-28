@@ -225,6 +225,19 @@ class Slice {
 	createToken() {
 		return $new('span.token')
 			.text(this.description)
+			.on('click', () => {
+				// Remove every token up to and including this one
+				for (let i = State.intent.length; i --; ) {
+					const slice = State.intent[i];
+					slice.token.remove();
+					if (slice === this) {
+						State.intent.splice(i);
+						break;
+					}
+				}
+				// Load this token and its siblings again
+				State.showSlices(this.siblings);
+			})
 			.element();
 	}
 

@@ -1,14 +1,16 @@
 /* line 3, ../scss/main.scss */
 :root {
-  --narrator-pad: 24px;
+  --pad: 24px;
+  --narrator-pad: 48px;
   --narrator-size: 21px;
   --intent-pad: 24px;
   --intent-size: 21px;
+  --token-underline-color: rgba(0, 0, 0, 0.1);
   --slices-pad: 24px;
   --slice-pad: 16px;
-  --slice-size: 25px; }
+  --slice-size: 31px; }
 
-/* line 13, ../scss/main.scss */
+/* line 15, ../scss/main.scss */
 html {
   font-family: Roboto, Helvetica, sans-serif;
   background: #FFFFFF;
@@ -18,43 +20,74 @@ html {
   overscroll-behavior: none;
   -webkit-tap-highlight-color: transparent; }
 
-/* line 23, ../scss/main.scss */
+@media (min-width: 800px) {
+  /* line 27, ../scss/main.scss */
+  :root {
+    --narrator-size: 31px;
+    --intent-pad: 32px;
+    --intent-size: 31px;
+    --slice-size: 48px; }
+
+  /* line 34, ../scss/main.scss */
+  body {
+    margin: 128px 0; } }
+/* line 39, ../scss/main.scss */
+.quotient {
+  padding: 0 var(--pad); }
+
+/* line 43, ../scss/main.scss */
 .narrator {
-  padding: var(--narrator-pad);
+  padding: var(--narrator-pad) 0;
   padding-bottom: 0;
   font-size: var(--narrator-size);
   font-weight: 300;
   text-align: center; }
 
-/* line 31, ../scss/main.scss */
+/* line 51, ../scss/main.scss */
 .intent {
-  padding: var(--intent-pad);
+  padding: var(--intent-pad) 0;
   font-size: var(--intent-size);
   text-align: center; }
-  /* line 36, ../scss/main.scss */
+  /* line 56, ../scss/main.scss */
   .intent > :first-child:first-letter {
     text-transform: uppercase; }
 
-/* line 41, ../scss/main.scss */
+/* line 61, ../scss/main.scss */
 .token {
-  display: inline-block; }
-  /* line 44, ../scss/main.scss */
+  display: inline-block;
+  cursor: pointer; }
+  /* line 65, ../scss/main.scss */
   .token::after {
     white-space: pre-wrap;
     content: ' '; }
+  /* line 70, ../scss/main.scss */
+  .token:hover {
+    border-bottom: 4px solid var(--token-underline-color); }
 
-/* line 50, ../scss/main.scss */
+/* line 75, ../scss/main.scss */
 .slices {
-  padding: var(--slices-pad);
+  padding: var(--slices-pad) 0;
   font-size: var(--slice-size);
   font-weight: 500; }
 
-/* line 56, ../scss/main.scss */
+/* line 81, ../scss/main.scss */
 .slice {
   padding: var(--slice-pad) 0;
-  text-align: center; }
+  text-align: center;
+  transition: transform 0.1s;
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+  /* line 88, ../scss/main.scss */
+  .slice:hover {
+    transform: scale(1.15); }
+  /* line 92, ../scss/main.scss */
+  .slice:active {
+    transform: scale(0.87); }
 
-/* line 61, ../scss/main.scss */
+/* line 97, ../scss/main.scss */
 .intent:empty ~ .slices .slice:first-letter {
   text-transform: uppercase; }
 

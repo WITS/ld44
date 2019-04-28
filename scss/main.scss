@@ -1,13 +1,15 @@
 @import 'color';
 
 :root {
-	--narrator-pad: 24px;
+	--pad: 24px;
+	--narrator-pad: 48px;
 	--narrator-size: 21px;
 	--intent-pad: 24px;
 	--intent-size: 21px;
+	--token-underline-color: rgba(0, 0, 0, 0.1);
 	--slices-pad: 24px;
 	--slice-pad: 16px;
-	--slice-size: 25px;
+	--slice-size: 31px;
 }
 
 html {
@@ -20,8 +22,26 @@ html {
 	-webkit-tap-highlight-color: transparent;
 }
 
+@media (min-width: 800px) {
+
+	:root {
+		--narrator-size: 31px;
+		--intent-pad: 32px;
+		--intent-size: 31px;
+		--slice-size: 48px;
+	}
+
+	body {
+		margin: 128px 0;
+	}
+}
+
+.quotient {
+	padding: 0 var(--pad);
+}
+
 .narrator {
-	padding: var(--narrator-pad);
+	padding: var(--narrator-pad) 0;
 	padding-bottom: 0;
 	font-size: var(--narrator-size);
 	font-weight: 300;
@@ -29,7 +49,7 @@ html {
 }
 
 .intent {
-	padding: var(--intent-pad);
+	padding: var(--intent-pad) 0;
 	font-size: var(--intent-size);
 	text-align: center;
 
@@ -40,15 +60,20 @@ html {
 
 .token {
 	display: inline-block;
+	cursor: pointer;
 
 	&::after {
 		white-space: pre-wrap;
 		content: ' ';
 	}
+
+	&:hover {
+		border-bottom: 4px solid var(--token-underline-color);
+	}
 }
 
 .slices {
-	padding: var(--slices-pad);
+	padding: var(--slices-pad) 0;
 	font-size: var(--slice-size);
 	font-weight: 500;
 }
@@ -56,6 +81,17 @@ html {
 .slice {
 	padding: var(--slice-pad) 0;
 	text-align: center;
+	transition: transform 0.1s;
+	cursor: pointer;
+	@include unselectable;
+
+	&:hover {
+		transform: scale(1.15);
+	}
+
+	&:active {
+		transform: scale(0.87);
+	}
 }
 
 .intent:empty ~ .slices .slice:first-letter {
