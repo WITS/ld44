@@ -29,6 +29,14 @@ class QuotientState {
 		return this.element.$child.slices;
 	}
 
+	get firstSlice() {
+		return this.intent[0] || null;
+	}
+
+	get lastSlice() {
+		return this.intent[this.intent.length - 1] || null;
+	}
+
 	pushMessage(text) {
 		this.messages.push(text);
 		this.narratorElement.textContent = text;
@@ -109,9 +117,17 @@ class QuotientState {
 
 	// Shows a list of slices
 	showSlices(slices) {
-		this.slices = slices;
+		this.slices = slices.slice();
 		// Clear current list
 		this.slicesElement.empty();
+		// If this is a valid place to end the player's turn
+		if (this.intent.length !== 0 && this.lastSlice.isEnd === true) {
+			slices.push(new Slice({
+				id: 'end',
+				text: 'end turn',
+				description: '.'
+			}));
+		}
 		// Add in the new elements
 		let dur = 500;
 		for (let slice of slices) {
@@ -171,9 +187,15 @@ class QuotientState {
 		}
 		// Remove the current slices
 		this.slicesElement.empty();
-		// Update the currently visible slices
+		// Wait for the animation to (partly) finish
 		await sleep(250);
-		this.showSlices(slice.next);
+		// If the player was ending their turn
+		if (this.lastSlice.id === 'end') {
+			// TODO
+		} else {
+			// Update the currently visible slices
+			this.showSlices(slice.next);
+		}
 	}
 
 	createElement() {
@@ -191,6 +213,8 @@ class QuotientState {
 class Slice {
 
 	constructor(json) {
+		// Special
+		this.id = json.id || null;
 		// The text for this slice
 		this.text = json.text;
 		// The text for the token
