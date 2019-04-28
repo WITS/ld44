@@ -1,0 +1,85 @@
+// Primary Font
+$primary-font: Roboto, Helvetica, sans-serif;
+
+/// Colors
+
+// Translucent White
+$white-9: rgba(255, 255, 255, 0.87);
+$white-5: rgba(255, 255, 255, 0.54);
+$white-3: rgba(255, 255, 255, 0.31);
+
+// Translucent Black
+$black-9: rgba(0, 0, 0, 0.87);
+$black-5: rgba(0, 0, 0, 0.54);
+$black-3: rgba(0, 0, 0, 0.31);
+$black-1: rgba(0, 0, 0, 0.1);
+$black-0: rgba(0, 0, 0, 0.06);
+
+// Theme
+$nav-color: #303F9F;
+$background-color: #FFFFFF;
+$primary-color: #3F51B5;
+$accent-color: #2196F3;
+$cyan-accent: #00B0FF;
+$done-color: #0F9D58;
+$star-color: #D32F2F;
+
+/// Mixins
+@mixin material-icon {
+	font-family: 'Material Icons';
+	font-weight: normal;
+	font-style: normal;
+	text-transform: none;
+	letter-spacing: normal;
+	word-wrap: normal;
+	white-space: nowrap;
+	direction: ltr;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+	-moz-osx-font-smoothing: grayscale;
+	font-feature-settings: 'liga';
+}
+
+@mixin fa-any {
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	line-height: 1;
+}
+
+@mixin fab {
+	@include fa-any;
+	font-family: "Font Awesome 5 Brands";
+}
+
+@mixin fal {
+	@include fa-any;
+	font-weight: 300;
+	font-family: "Font Awesome 5 Pro";
+}
+
+@mixin far {
+	@include fa-any;
+	font-weight: 400;
+	font-family: "Font Awesome 5 Pro";
+}
+
+@mixin fa {
+	@include fa-any;
+	font-family: "Font Awesome 5 Pro";
+	font-weight: 900;
+}
+
+@mixin fas {
+	@include fa;
+}
+
+@mixin unselectable {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}

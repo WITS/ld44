@@ -1,0 +1,49 @@
+/* line 3, ../scss/main.scss */
+:root {
+  --narrator-pad: 24px;
+  --intent-pad: 24px;
+  --slices-pad: 24px;
+  --slice-pad: 12px; }
+
+/* line 10, ../scss/main.scss */
+html {
+  font-family: Roboto, Helvetica, sans-serif;
+  background: #FFFFFF;
+  color: rgba(0, 0, 0, 0.87);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent; }
+
+/* line 20, ../scss/main.scss */
+.narrator {
+  padding: var(--narrator-pad); }
+
+/* line 24, ../scss/main.scss */
+.intent {
+  padding: var(--intent-pad); }
+  /* line 27, ../scss/main.scss */
+  .intent > :first-child:first-letter {
+    text-transform: uppercase; }
+
+/* line 32, ../scss/main.scss */
+.token {
+  display: inline-block; }
+  /* line 35, ../scss/main.scss */
+  .token::after {
+    white-space: pre-wrap;
+    content: ' '; }
+
+/* line 41, ../scss/main.scss */
+.slices {
+  padding: var(--slices-pad); }
+
+/* line 45, ../scss/main.scss */
+.slice {
+  padding: var(--slice-pad) 0; }
+
+/* line 49, ../scss/main.scss */
+.intent:empty ~ .slices .slice:first-letter {
+  text-transform: uppercase; }
+
+/*# sourceMappingURL=main.css.map */

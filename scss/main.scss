@@ -1,0 +1,51 @@
+@import 'color';
+
+:root {
+	--narrator-pad: 24px;
+	--intent-pad: 24px;
+	--slices-pad: 24px;
+	--slice-pad: 12px;
+}
+
+html {
+	font-family: $primary-font;
+	background: $background-color;
+	color: $black-9;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	overscroll-behavior: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.narrator {
+	padding: var(--narrator-pad);
+}
+
+.intent {
+	padding: var(--intent-pad);
+
+	> :first-child:first-letter {
+		text-transform: uppercase;
+	}
+}
+
+.token {
+	display: inline-block;
+
+	&::after {
+		white-space: pre-wrap;
+		content: ' ';
+	}
+}
+
+.slices {
+	padding: var(--slices-pad);
+}
+
+.slice {
+	padding: var(--slice-pad) 0;
+}
+
+.intent:empty ~ .slices .slice:first-letter {
+	text-transform: uppercase;
+}
