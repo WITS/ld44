@@ -135,6 +135,11 @@ class QuotientState {
 		// Keep track of the slices at the time that this slice was selected
 		slice.siblings = this.slices;
 		this.intent.push(slice);
+		// Capture locations of current tokens
+		const tokens = new Map();
+		for (let token of this.intentElement.children) {
+			tokens.set(token, Transition.snapshot(token));
+		}
 		this.intentElement.append(slice.token);
 		// Transition the slice to the token
 		Transition.from(slice.token, Transition.snapshot(slice.textElement), 500, {
@@ -156,6 +161,13 @@ class QuotientState {
 					to: 1
 				}
 			}, 750);
+		}
+		// Animate the current tokens over
+		for (let [token, snapshot] of tokens) {
+			Transition.from(token, snapshot, 500, {
+				aspectRatio: 'none',
+				timing: 'cubic-bezier(0.2, 0.75, 0.3, 1.5)'
+			});
 		}
 		// Remove the current slices
 		this.slicesElement.empty();

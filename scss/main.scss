@@ -25,11 +25,13 @@ html {
 	padding-bottom: 0;
 	font-size: var(--narrator-size);
 	font-weight: 300;
+	text-align: center;
 }
 
 .intent {
 	padding: var(--intent-pad);
 	font-size: var(--intent-size);
+	text-align: center;
 
 	> :first-child:first-letter {
 		text-transform: uppercase;

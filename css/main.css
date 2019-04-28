@@ -23,36 +23,38 @@ html {
   padding: var(--narrator-pad);
   padding-bottom: 0;
   font-size: var(--narrator-size);
-  font-weight: 300; }
+  font-weight: 300;
+  text-align: center; }
 
-/* line 30, ../scss/main.scss */
+/* line 31, ../scss/main.scss */
 .intent {
   padding: var(--intent-pad);
-  font-size: var(--intent-size); }
-  /* line 34, ../scss/main.scss */
+  font-size: var(--intent-size);
+  text-align: center; }
+  /* line 36, ../scss/main.scss */
   .intent > :first-child:first-letter {
     text-transform: uppercase; }
 
-/* line 39, ../scss/main.scss */
+/* line 41, ../scss/main.scss */
 .token {
   display: inline-block; }
-  /* line 42, ../scss/main.scss */
+  /* line 44, ../scss/main.scss */
   .token::after {
     white-space: pre-wrap;
     content: ' '; }
 
-/* line 48, ../scss/main.scss */
+/* line 50, ../scss/main.scss */
 .slices {
   padding: var(--slices-pad);
   font-size: var(--slice-size);
   font-weight: 500; }
 
-/* line 54, ../scss/main.scss */
+/* line 56, ../scss/main.scss */
 .slice {
   padding: var(--slice-pad) 0;
   text-align: center; }
 
-/* line 59, ../scss/main.scss */
+/* line 61, ../scss/main.scss */
 .intent:empty ~ .slices .slice:first-letter {
   text-transform: uppercase; }
 
