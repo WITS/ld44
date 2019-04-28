@@ -1,11 +1,14 @@
 /* line 3, ../scss/main.scss */
 :root {
   --narrator-pad: 24px;
+  --narrator-size: 21px;
   --intent-pad: 24px;
+  --intent-size: 21px;
   --slices-pad: 24px;
-  --slice-pad: 12px; }
+  --slice-pad: 16px;
+  --slice-size: 25px; }
 
-/* line 10, ../scss/main.scss */
+/* line 13, ../scss/main.scss */
 html {
   font-family: Roboto, Helvetica, sans-serif;
   background: #FFFFFF;
@@ -15,34 +18,41 @@ html {
   overscroll-behavior: none;
   -webkit-tap-highlight-color: transparent; }
 
-/* line 20, ../scss/main.scss */
+/* line 23, ../scss/main.scss */
 .narrator {
-  padding: var(--narrator-pad); }
+  padding: var(--narrator-pad);
+  padding-bottom: 0;
+  font-size: var(--narrator-size);
+  font-weight: 300; }
 
-/* line 24, ../scss/main.scss */
+/* line 30, ../scss/main.scss */
 .intent {
-  padding: var(--intent-pad); }
-  /* line 27, ../scss/main.scss */
+  padding: var(--intent-pad);
+  font-size: var(--intent-size); }
+  /* line 34, ../scss/main.scss */
   .intent > :first-child:first-letter {
     text-transform: uppercase; }
 
-/* line 32, ../scss/main.scss */
+/* line 39, ../scss/main.scss */
 .token {
   display: inline-block; }
-  /* line 35, ../scss/main.scss */
+  /* line 42, ../scss/main.scss */
   .token::after {
     white-space: pre-wrap;
     content: ' '; }
 
-/* line 41, ../scss/main.scss */
+/* line 48, ../scss/main.scss */
 .slices {
-  padding: var(--slices-pad); }
+  padding: var(--slices-pad);
+  font-size: var(--slice-size);
+  font-weight: 500; }
 
-/* line 45, ../scss/main.scss */
+/* line 54, ../scss/main.scss */
 .slice {
-  padding: var(--slice-pad) 0; }
+  padding: var(--slice-pad) 0;
+  text-align: center; }
 
-/* line 49, ../scss/main.scss */
+/* line 59, ../scss/main.scss */
 .intent:empty ~ .slices .slice:first-letter {
   text-transform: uppercase; }
 

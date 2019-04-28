@@ -2,9 +2,12 @@
 
 :root {
 	--narrator-pad: 24px;
+	--narrator-size: 21px;
 	--intent-pad: 24px;
+	--intent-size: 21px;
 	--slices-pad: 24px;
-	--slice-pad: 12px;
+	--slice-pad: 16px;
+	--slice-size: 25px;
 }
 
 html {
@@ -19,10 +22,14 @@ html {
 
 .narrator {
 	padding: var(--narrator-pad);
+	padding-bottom: 0;
+	font-size: var(--narrator-size);
+	font-weight: 300;
 }
 
 .intent {
 	padding: var(--intent-pad);
+	font-size: var(--intent-size);
 
 	> :first-child:first-letter {
 		text-transform: uppercase;
@@ -40,10 +47,13 @@ html {
 
 .slices {
 	padding: var(--slices-pad);
+	font-size: var(--slice-size);
+	font-weight: 500;
 }
 
 .slice {
 	padding: var(--slice-pad) 0;
+	text-align: center;
 }
 
 .intent:empty ~ .slices .slice:first-letter {

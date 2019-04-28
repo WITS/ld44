@@ -155,7 +155,7 @@ class QuotientState {
 					from: 0,
 					to: 1
 				}
-			}, 500);
+			}, 750);
 		}
 		// Remove the current slices
 		this.slicesElement.empty();
