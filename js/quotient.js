@@ -116,7 +116,7 @@ class QuotientState {
 	}
 
 	// Shows a list of slices
-	showSlices(slices) {
+	showSlices(slices, options = {}) {
 		this.slices = slices.slice();
 		// Clear current list
 		this.slicesElement.empty();
@@ -132,17 +132,19 @@ class QuotientState {
 		let dur = 500;
 		for (let slice of slices) {
 			this.slicesElement.append(slice.element);
-			Transition.animate(slice.element, {
-				from: {
-					transform: `translateY(300px)`,
-					opacity: 0
-				},
-				to: {
-					transform: `none`,
-					opacity: 1
-				}
-			}, dur);
-			dur += 100;
+			if (options.skipAnimationFor !== slice) {
+				Transition.animate(slice.element, {
+					from: {
+						transform: `translateY(300px)`,
+						opacity: 0
+					},
+					to: {
+						transform: `none`,
+						opacity: 1
+					}
+				}, dur);
+				dur += 100;
+			}
 		}
 	}
 
@@ -259,6 +261,11 @@ class Slice {
 		return $new('span.token')
 			.text(this.description)
 			.on('click', () => {
+				// Capture locations of current tokens
+				const tokens = new Map();
+				for (let token of State.intentElement.children) {
+					tokens.set(token, Transition.snapshot(token));
+				}
 				// Remove every token up to and including this one
 				for (let i = State.intent.length; i --; ) {
 					const slice = State.intent[i];
@@ -269,7 +276,23 @@ class Slice {
 					}
 				}
 				// Load this token and its siblings again
-				State.showSlices(this.siblings);
+				State.showSlices(this.siblings, {
+					skipAnimationFor: this
+				});
+				// Animate the changes to the tokens
+				const el = this.token;
+				for (let [token, snapshot] of tokens) {
+					if (token === el) {
+						// Animate this slice from its token
+						Transition.from(this.textElement, snapshot, 500, {
+							aspectRatio: 'height'
+						});
+					} else {
+						Transition.from(token, snapshot, 500, {
+							aspectRatio: 'none'
+						});
+					}
+				}
 			})
 			.element();
 	}

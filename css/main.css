@@ -84,19 +84,21 @@ html {
   -ms-user-select: none;
   user-select: none; }
   /* line 91, ../scss/main.scss */
+  .slice .text {
+    display: inline-block; }
+  /* line 95, ../scss/main.scss */
   .slice:hover {
     transform: scale(1.15); }
-  /* line 95, ../scss/main.scss */
+  /* line 99, ../scss/main.scss */
   .slice:active {
     transform: scale(0.87); }
-  /* line 99, ../scss/main.scss */
+  /* line 103, ../scss/main.scss */
   .slice ~ .slice.end-slice {
     margin-top: var(--end-margin); }
-    /* line 102, ../scss/main.scss */
+    /* line 106, ../scss/main.scss */
     .slice ~ .slice.end-slice .text {
-      position: relative;
-      display: inline-block; }
-      /* line 106, ../scss/main.scss */
+      position: relative; }
+      /* line 109, ../scss/main.scss */
       .slice ~ .slice.end-slice .text::before {
         position: absolute;
         left: 0;
@@ -106,7 +108,7 @@ html {
         border-top: 1px solid rgba(0, 0, 0, 0.1);
         content: ''; }
 
-/* line 119, ../scss/main.scss */
+/* line 122, ../scss/main.scss */
 .intent:empty ~ .slices .slice:first-letter {
   text-transform: uppercase; }
 
