@@ -82,14 +82,14 @@ class QuotientState {
 		this.status = 'battle';
 		this.opponent = other;
 		State.pushMessage(choose(
-				`You nearly bump into a ${other.name}`,
-				`You stop just short of a ${other.name}`,
-				`A ${other.name} blocks your path`,
-				`You come across a ${other.name}`,
-				`Your journey is interrupted by a ${other.name}`,
-				`There's a ${other.name} directly in front of you`,
-				`You feel the eyes of a ${other.name} watching you`,
-				`You turn to meet the watchful face of a ${other.name}`
+				`You nearly bump into ${other.single}`,
+				`You stop just short of ${other.single}`,
+				`${cap(other.single)} blocks your path`,
+				`You come across ${other.single}`,
+				`Your journey is interrupted by ${other.single}`,
+				`There's ${other.single} directly in front of you`,
+				`You feel the eyes of ${other.single} watching you`,
+				`You turn to meet the watchful face of ${other.single}`
 			), {
 			before: this.intentElement
 		});
@@ -287,9 +287,10 @@ class QuotientState {
 		for (let token of this.intentElement.children) {
 			tokens.set(token, Transition.snapshot(token));
 		}
+		const textSnapshot = Transition.snapshot(slice.textElement);
 		this.intentElement.append(slice.token);
 		// Transition the slice to the token
-		Transition.from(slice.token, Transition.snapshot(slice.textElement), 500, {
+		Transition.from(slice.token, textSnapshot, 500, {
 			aspectRatio: 'height'
 		});
 		// If the token's text is longer than the slice's

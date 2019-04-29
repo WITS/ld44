@@ -32,9 +32,12 @@ class Item {
 			: ` ${choose('with', 'using')} ${owner.possessive} ${this.name}`;
 		// Calculate the elemental string
 		const elementalStr = ''; // TODO
-		if (roll() <= this.accuracy && partRatio !== 0) {
+		const r = roll();
+		if (r <= this.accuracy && partRatio !== 0) {
+			// Calculate special modifiers based on effectiveness
+			const rollRatio = 0.5 + 1.5 * r / this.accuracy;
 			// Apply ability
-			const damage = this.power * partRatio;
+			const damage = Math.round(this.power * partRatio * rollRatio);
 			await State.pushMessage(`${cap(owner.pronoun)} ${this.description} ${at} ${
 				partStr
 			}${withStr}, dealing ${damage} damage${elementalStr}`);

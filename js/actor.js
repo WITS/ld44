@@ -14,6 +14,12 @@ class Actor {
 		}
 	}
 
+	get single() {
+		return ('aeiou'.indexOf(this.name[0]) !== -1)
+			? `an ${this.name}`
+			: `a ${this.name}`;
+	}
+
 	addItem(item) {
 		item.owner = this;
 		this.items.push(item);
@@ -24,7 +30,7 @@ class Player extends Actor {
 	
 	constructor(json = {}) {
 		json.name = 'you';
-		json.health = 24;
+		json.health = 49;
 		super(json);
 	}
 
@@ -80,7 +86,7 @@ class BodyPart {
 	constructor(json = {}) {
 		this.name = json.name;
 		this.damage = json.damage || 1;
-		this.difficulty = json.difficulty || 0;
+		this.difficulty = json.difficulty || (100 / json.damage) || 0;
 	}
 
 	// Rolls a die and returns the appropriate multiplier
