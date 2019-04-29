@@ -1,10 +1,10 @@
 @import 'color';
 
 :root {
-	--pad: 24px;
-	--nav-y: 12px;
+	--pad: 16px;
+	--nav-y: 6px;
 	--nav-h: 56px;
-	--nav-spacing: 12px;
+	--nav-spacing: 6px;
 	--nav-size: 25px;
 	--narrator-pad: 48px;
 	--narrator-size: 21px;
@@ -34,8 +34,10 @@ body {
 @media (min-width: 800px) {
 
 	:root {
+		--pad: 24px;
 		--nav-y: 0px;
 		--nav-h: 84px;
+		--nav-spacing: 12px;
 		--nav-size: 42px;
 		--narrator-size: 31px;
 		--intent-pad: 32px;
@@ -68,17 +70,17 @@ nav {
 		&.player {
 			left: 0;
 
-			.name {
-				margin-left: var(--nav-spacing);
-			}
+			// .name {
+			// 	margin-left: var(--nav-spacing);
+			// }
 		}
 
 		&.opponent {
 			right: 0;
 
-			.health {
-				margin-left: var(--nav-spacing);
-			}
+			// .health {
+			// 	margin-left: var(--nav-spacing);
+			// }
 		}
 
 		.name {
@@ -95,14 +97,21 @@ nav {
 		.health {
 			display: inline-block;
 			font-weight: 500;
+		}
 
-			&::before {
-				content: '';
-			}
+		&.player .health::before,
+		&.opponent .health::after {
+			content: attr(data-value);
+		}
 
-			&::after {
-				content: attr(data-value);
-			}
+		&.player .health::after,
+		&.opponent .health::before {
+			@include fas;
+			padding: 0 var(--nav-spacing);
+			font-size: 0.5em;
+			line-height: var(--nav-h);
+			vertical-align: top;
+			content: '\f004';
 		}
 	}
 }
