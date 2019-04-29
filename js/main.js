@@ -9,14 +9,16 @@ document.on('DOMContentLoaded', () => {
 	State.playerNameElement.attr('data-value', 'You');
 	State.counter = 1;
 	// Testing
+	const s = Object.values(Spells);
+	const s1 = s.splice(irange(0, s.length - 1), 1)[0];
 	[
 		new Stabby({
 			name: 'rusty sword',
 			power: 3,
 			accuracy: 92
 		}),
-		new Spell(choose(...Object.values(Spells))()),
-		new Spell(choose(...Object.values(Spells))())
+		new Spell(s1()),
+		new Spell(choose(...s)())
 		// new Shooty({
 		// 	name: 'longbow',
 		// 	power: 5,
