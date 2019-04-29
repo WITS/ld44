@@ -60,25 +60,27 @@ html {
 
 /* line 68, ../scss/main.scss */
 .token {
-  display: inline-block;
-  cursor: pointer; }
-  /* line 72, ../scss/main.scss */
+  display: inline-block; }
+  /* line 71, ../scss/main.scss */
   .token::after {
     white-space: pre-wrap;
     content: ' '; }
-  /* line 77, ../scss/main.scss */
-  .token:hover {
-    text-decoration: underline;
-    text-decoration-color: var(--token-underline-color);
-    -webkit-text-decoration-color: var(--token-underline-color); }
+  /* line 76, ../scss/main.scss */
+  .narrator ~ .intent .token {
+    cursor: pointer; }
+    /* line 79, ../scss/main.scss */
+    .narrator ~ .intent .token:hover {
+      text-decoration: underline;
+      text-decoration-color: var(--token-underline-color);
+      -webkit-text-decoration-color: var(--token-underline-color); }
 
-/* line 84, ../scss/main.scss */
+/* line 87, ../scss/main.scss */
 .slices {
   padding: var(--slices-pad) 0;
   font-size: var(--slice-size);
   font-weight: 500; }
 
-/* line 90, ../scss/main.scss */
+/* line 93, ../scss/main.scss */
 .slice {
   padding: var(--slice-pad) 0;
   text-align: center;
@@ -88,22 +90,22 @@ html {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none; }
-  /* line 97, ../scss/main.scss */
+  /* line 100, ../scss/main.scss */
   .slice .text {
     display: inline-block; }
-  /* line 101, ../scss/main.scss */
+  /* line 104, ../scss/main.scss */
   .slice:hover {
     transform: scale(1.15); }
-  /* line 105, ../scss/main.scss */
+  /* line 108, ../scss/main.scss */
   .slice:active {
-    transform: scale(0.87); }
-  /* line 109, ../scss/main.scss */
+    transform: scale(1); }
+  /* line 113, ../scss/main.scss */
   .slice ~ .slice.end-slice {
     margin-top: var(--end-margin); }
-    /* line 112, ../scss/main.scss */
+    /* line 116, ../scss/main.scss */
     .slice ~ .slice.end-slice .text {
       position: relative; }
-      /* line 115, ../scss/main.scss */
+      /* line 119, ../scss/main.scss */
       .slice ~ .slice.end-slice .text::before {
         position: absolute;
         left: 0;
@@ -113,7 +115,7 @@ html {
         border-top: 1px solid rgba(0, 0, 0, 0.1);
         content: ''; }
 
-/* line 128, ../scss/main.scss */
+/* line 132, ../scss/main.scss */
 .intent:empty ~ .slices .text:first-letter {
   text-transform: uppercase; }
 

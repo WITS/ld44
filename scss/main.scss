@@ -67,17 +67,20 @@ html {
 
 .token {
 	display: inline-block;
-	cursor: pointer;
 
 	&::after {
 		white-space: pre-wrap;
 		content: ' ';
 	}
 
-	&:hover {
-		text-decoration: underline;
-		text-decoration-color: var(--token-underline-color);
-		-webkit-text-decoration-color: var(--token-underline-color);
+	.narrator ~ .intent & {
+		cursor: pointer;
+
+		&:hover {
+			text-decoration: underline;
+			text-decoration-color: var(--token-underline-color);
+			-webkit-text-decoration-color: var(--token-underline-color);
+		}
 	}
 }
 
@@ -103,7 +106,8 @@ html {
 	}
 
 	&:active {
-		transform: scale(0.87);
+		// transform: scale(0.87);
+		transform: scale(1);
 	}
 
 	.slice ~ &.end-slice {

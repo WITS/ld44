@@ -4,6 +4,7 @@ class Item {
 		this.owner = json.owner || null;
 		this.name = json.name;
 		this._description = json.description || json.name;
+		this.redundantName = json.redundantName || false;
 		this.power = json.power || 0;
 		this.fire = json.fire || 0;
 		this.ice = json.ice || 0;
@@ -27,7 +28,7 @@ class Item {
 			? 1
 			: part.hit();
 		// Calculate the with (item) string
-		const withStr = this.category === 'cast'
+		const withStr = this.category === 'cast' || this.redundantName
 			? ''
 			: ` ${choose('with', 'using')} ${owner.possessive} ${this.name}`;
 		// Calculate the elemental string

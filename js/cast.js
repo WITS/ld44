@@ -47,6 +47,7 @@ const Enemies = {
 			new Ability({
 				name: 'firebreath',
 				description: 'breathes fire',
+				redundantName: true,
 				power: 2,
 				fire: 1,
 				accuracy: 80

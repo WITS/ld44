@@ -404,6 +404,11 @@ class Slice {
 		return $new('span.token')
 			.text(this.description)
 			.on('click', () => {
+				// If the intent is followed by narration
+				if (State.intentElement.nextSibling.hasClass('narrator')) {
+					// Stop here
+					return;
+				}
 				// Capture locations of current tokens
 				const tokens = new Map();
 				for (let token of State.intentElement.children) {
