@@ -70,7 +70,8 @@ class Enemy extends Actor {
 	}
 
 	async turn() {
-		// TODO
+		// Randomly do a thing
+		await choose(...this.items).use(State.player);
 	}
 }
 

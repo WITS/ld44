@@ -12,7 +12,8 @@ class Item {
 		this.accuracy = json.accuracy || 0;
 	}
 
-	use(other = null, part = null) {
+	async use(other = null, part = null) {
+		await sleep(1000);
 		const owner = other === State.player
 			? State.opponent
 			: State.player;
