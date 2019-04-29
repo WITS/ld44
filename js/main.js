@@ -23,45 +23,7 @@ document.on('DOMContentLoaded', () => {
 			accuracy: 98
 		})
 	].map(x => State.player.addItem(x));
-	State.startBattle(new Enemy({
-		name: 'red dragon',
-		health: 12,
-		parts: [
-			new BodyPart({
-				name: 'chest'
-			}),
-			new BodyPart({
-				name: 'neck',
-				damage: 3,
-				difficulty: 67
-			}),
-			new BodyPart({
-				name: 'wing',
-				damage: 2,
-				difficulty: 50
-			})
-		],
-		items: [
-			new Stabby({
-				name: 'claws',
-				power: 3,
-				accuracy: 90
-			}),
-			new Ability({
-				name: 'teeth',
-				description: 'bites',
-				power: 5,
-				accuracy: 60
-			}),
-			new Ability({
-				name: 'firebreath',
-				description: 'breathes fire',
-				power: 2,
-				fire: 1,
-				accuracy: 80
-			})
-		]
-	}));
+	State.nextEncounter();
 });
 
 // Sleeps for n milliseconds
@@ -89,6 +51,16 @@ function singular(str) {
 // Randomly chooses one of the parameters
 function choose(...args) {
 	return args[Math.floor(Math.random() * args.length)];
+}
+
+// Returns a number between min and max, inclusive
+function range(min, max) {
+	return min + (Math.random() + (Number.EPSILON || 0)) * max;
+}
+
+// Return an integer between min and max, inclusive
+function irange(min, max) {
+	return min + Math.floor(Math.random() * (max - min + 1));
 }
 
 // Rolls an n-sided die (returns a random int in the range [1, n])

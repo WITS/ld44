@@ -2,6 +2,7 @@
 class QuotientState {
 
 	constructor() {
+		this.counter = 0;
 		this.status = 'travel';
 		this.player = new Player();
 		this.opponent = null;
@@ -64,6 +65,17 @@ class QuotientState {
 			}
 		}, dur);
 		await sleep(dur + 250);
+	}
+
+	// What's next?
+	nextEncounter() {
+		// Clear the previous encounter
+		this.intent.splice(0);
+		this.intentElement.empty();
+		this.element.q('.narrator').each(el => el.remove());
+		// TODO: show merchants occasionally
+		++ this.counter;
+		State.startBattle(new Enemy(createEnemy()));
 	}
 
 	startBattle(other) {
@@ -187,8 +199,32 @@ class QuotientState {
 		if (this.player.health > 0) {
 			// If the opponent is done for
 			if (this.opponent.health <= 0) {
-				// TODO: go to the next encounter
-				this.pushMessage(`You defeated the ${this.opponent.name}!`);
+				// Fade out the current text
+				const dur = 500;
+				for (let child of this.element.children) {
+					if (child !== this.slicesElement) {
+						child.style.opacity = '0';
+						Transition.animate(child, {
+							opacity: {
+								from: '1',
+								to: '0'
+							}
+						}, dur);
+					}
+				}
+				// Update the current text
+				await sleep(dur);
+				await this.pushMessage(`You defeated the ${this.opponent.name}!`, {
+					before: this.intentElement
+				});
+				// Let the player continue
+				this.showSlices([
+					new Slice({
+						id: 'continue',
+						text: 'continue'
+					})
+				]);
+				this.intentElement.style.opacity = '1';
 			} else {
 				// Continue the fight
 				this.showSlices(slices);
@@ -276,7 +312,11 @@ class QuotientState {
 		// Wait for the animation to (partly) finish
 		await sleep(250);
 		// If the player was ending their turn
-		if (this.lastSlice.id === 'end') {
+		if (this.lastSlice.id === 'continue') {
+			// Next encounter!
+			await sleep(250);
+			this.nextEncounter();
+		} else if (this.lastSlice.id === 'end') {
 			// Handle the end of the turn
 			this.endTurn();
 		} else {
