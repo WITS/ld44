@@ -81,7 +81,16 @@ class QuotientState {
 	startBattle(other) {
 		this.status = 'battle';
 		this.opponent = other;
-		State.pushMessage(`You nearly bump into a ${other.name}`, {
+		State.pushMessage(choose(
+				`You nearly bump into a ${other.name}`,
+				`You stop just short of a ${other.name}`,
+				`A ${other.name} blocks your path`,
+				`You come across a ${other.name}`,
+				`Your journey is interrupted by a ${other.name}`,
+				`There's a ${other.name} directly in front of you`,
+				`You feel the eyes of a ${other.name} watching you`,
+				`You turn to meet the watchful face of a ${other.name}`
+			), {
 			before: this.intentElement
 		});
 		// Start up the slices

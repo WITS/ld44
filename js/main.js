@@ -12,7 +12,7 @@ document.on('DOMContentLoaded', () => {
 			accuracy: 92
 		}),
 		new Shooty({
-			name: 'loooong bow',
+			name: 'longbow',
 			power: 5,
 			accuracy: 60
 		}),
