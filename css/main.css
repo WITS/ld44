@@ -65,15 +65,17 @@ html {
     content: ' '; }
   /* line 73, ../scss/main.scss */
   .token:hover {
-    border-bottom: 4px solid var(--token-underline-color); }
+    text-decoration: underline;
+    text-decoration-color: var(--token-underline-color);
+    -webkit-text-decoration-color: var(--token-underline-color); }
 
-/* line 78, ../scss/main.scss */
+/* line 80, ../scss/main.scss */
 .slices {
   padding: var(--slices-pad) 0;
   font-size: var(--slice-size);
   font-weight: 500; }
 
-/* line 84, ../scss/main.scss */
+/* line 86, ../scss/main.scss */
 .slice {
   padding: var(--slice-pad) 0;
   text-align: center;
@@ -83,22 +85,22 @@ html {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none; }
-  /* line 91, ../scss/main.scss */
+  /* line 93, ../scss/main.scss */
   .slice .text {
     display: inline-block; }
-  /* line 95, ../scss/main.scss */
+  /* line 97, ../scss/main.scss */
   .slice:hover {
     transform: scale(1.15); }
-  /* line 99, ../scss/main.scss */
+  /* line 101, ../scss/main.scss */
   .slice:active {
     transform: scale(0.87); }
-  /* line 103, ../scss/main.scss */
+  /* line 105, ../scss/main.scss */
   .slice ~ .slice.end-slice {
     margin-top: var(--end-margin); }
-    /* line 106, ../scss/main.scss */
+    /* line 108, ../scss/main.scss */
     .slice ~ .slice.end-slice .text {
       position: relative; }
-      /* line 109, ../scss/main.scss */
+      /* line 111, ../scss/main.scss */
       .slice ~ .slice.end-slice .text::before {
         position: absolute;
         left: 0;
@@ -108,7 +110,7 @@ html {
         border-top: 1px solid rgba(0, 0, 0, 0.1);
         content: ''; }
 
-/* line 122, ../scss/main.scss */
+/* line 124, ../scss/main.scss */
 .intent:empty ~ .slices .text:first-letter {
   text-transform: uppercase; }
 

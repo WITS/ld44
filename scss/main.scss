@@ -71,7 +71,9 @@ html {
 	}
 
 	&:hover {
-		border-bottom: 4px solid var(--token-underline-color);
+		text-decoration: underline;
+		text-decoration-color: var(--token-underline-color);
+		-webkit-text-decoration-color: var(--token-underline-color);
 	}
 }
 
