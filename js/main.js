@@ -7,6 +7,7 @@ document.on('DOMContentLoaded', () => {
 	document.body.appendChild(State.nav);
 	document.body.appendChild(State.element);
 	State.playerNameElement.attr('data-value', 'You');
+	State.counter = 1;
 	// Testing
 	[
 		new Stabby({
@@ -14,18 +15,21 @@ document.on('DOMContentLoaded', () => {
 			power: 3,
 			accuracy: 92
 		}),
-		new Shooty({
-			name: 'longbow',
-			power: 5,
-			accuracy: 60
-		}),
-		new Spell({
-			name: 'fireball',
-			power: 2,
-			fire: 1,
-			accuracy: 98
-		})
+		new Spell(choose(...Object.values(Spells))()),
+		new Spell(choose(...Object.values(Spells))())
+		// new Shooty({
+		// 	name: 'longbow',
+		// 	power: 5,
+		// 	accuracy: 60
+		// }),
+		// new Spell({
+		// 	name: 'fireball',
+		// 	power: 2,
+		// 	fire: 1,
+		// 	accuracy: 98
+		// })
 	].map(x => State.player.addItem(x));
+	State.counter = 0;
 	State.nextEncounter();
 });
 

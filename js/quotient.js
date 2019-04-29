@@ -103,6 +103,7 @@ class QuotientState {
 
 	startBattle(other) {
 		this.status = 'battle';
+		this.player.damage = 1;
 		this.opponent = other;
 		State.opponentNameElement.attr('data-value', cap(other.shortName));
 		State.pushMessage(choose(

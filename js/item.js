@@ -7,9 +7,13 @@ class Item {
 		this.redundantName = json.redundantName || false;
 		this.power = json.power || 0;
 		this.fire = json.fire || 0;
-		this.ice = json.ice || 0;
-		this.poison = json.poison || 0;
-		this.electric = json.eletric || 0;
+		this.water = json.water || 0;
+		this.air = json.air || 0;
+		this.earth = json.earth || 0;
+		this.heal = json.heal || 0;
+		this.transfusion = json.transfusion || 0;
+		this.attack = json.attack || 0;
+		this.defense = json.defense || 0;
 		this.accuracy = json.accuracy || 0;
 	}
 
@@ -37,13 +41,43 @@ class Item {
 		if (r <= this.accuracy && partRatio !== 0) {
 			// Calculate special modifiers based on effectiveness
 			const rollRatio = 0.5 + 1.5 * r / this.accuracy;
+			// Calculate the elemental damage
+			const elemental =
+				(this.fire * other.fire) +
+				(this.water * other.water) +
+				(this.air * other.air) +
+				(this.earth * other.earth);
+			const actionStr = `${cap(owner.pronoun)} ${this.description} ${at} ${
+				partStr}${withStr}`;
 			// Apply ability
-			const damage = Math.round(this.power * partRatio * rollRatio);
-			await State.pushMessage(`${cap(owner.pronoun)} ${this.description} ${at} ${
-				partStr
-			}${withStr}, dealing ${damage} damage${elementalStr}`);
-			// Deal damage
-			other.health = Math.max(0, other.health - damage);
+			if (this.heal) {
+				// Heal
+				const val = Math.round(this.heal * rollRatio);
+				owner.health += val;
+				await State.pushMessage(`${actionStr}, healing ${val} heart(s)`);
+			} else if (this.transfusion) {
+				// Transfusion
+				const val = Math.min(Math.round(this.transfusion * rollRatio), other.health);
+				owner.health += val;
+				other.health -= val;
+				await State.pushMessage(`${actionStr}, stealing ${val} heart(s) from ${
+					other.pronoun}`);
+			} else if (this.attack) {
+				// Attack
+				owner.damage *= this.attack;
+				await State.pushMessage(`${actionStr}, raising ${owner.possessive} attack`);
+			} else if (this.defense) {
+				// Defense
+				owner.damage /= this.defense;
+				await State.pushMessage(`${actionStr}, raising ${owner.possessive} defense`);
+			} else {
+				// Damage (traditional / elemental)
+				const damage = Math.round((this.power + elemental)
+					* owner.damage * partRatio * rollRatio);
+				// Deal damage
+				other.health = Math.max(0, other.health - damage);
+				await State.pushMessage(`${actionStr}, dealing ${damage} damage${elementalStr}`);
+			}
 			return true;
 		} else {
 			// You done failed

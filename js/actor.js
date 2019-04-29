@@ -5,6 +5,13 @@ class Actor {
 		this.name = json.name || '';
 		// The amount of health that this actor has
 		this.health = json.health || 0;
+		// A ratio applied to all damage dealt by this actor
+		this.damage = json.damage || 1;
+		// How this actor is affected by different elemental damage
+		this.fire = json.fire != null ? json.fire : 1;
+		this.water = json.water != null ? json.water : 1;
+		this.air = json.air != null ? json.air : 1;
+		this.earth = json.earth != null ? json.earth : 1;
 		// The items that the actor can currently use
 		this.items = [];
 		if (json.items) {
