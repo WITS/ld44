@@ -159,8 +159,11 @@ class QuotientState {
 		// Attempt to use the item, on the part
 		await item.use(this.opponent, part);
 
-		// Let the enemy take their turn
-		await this.opponent.turn();
+		// If the opponent isn't already dead
+		if (this.opponent.health > 0) {
+			// Let the enemy take their turn
+			await this.opponent.turn();
+		}
 
 		// Start the player's next turn
 		const slices = this.intent[0].siblings;
@@ -180,7 +183,17 @@ class QuotientState {
 				aspectRatio: 'none'
 			});
 		}
-		this.showSlices(slices);
+		// If the player isn't dead
+		if (this.player.health > 0) {
+			// If the opponent is done for
+			if (this.opponent.health <= 0) {
+				// TODO: go to the next encounter
+				this.pushMessage(`You defeated the ${this.opponent.name}!`);
+			} else {
+				// Continue the fight
+				this.showSlices(slices);
+			}
+		}
 	}
 
 	// Shows a list of slices

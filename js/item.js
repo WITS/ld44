@@ -33,7 +33,8 @@ class Item {
 			await State.pushMessage(`${cap(owner.pronoun)} ${this.description} ${at} ${
 				partStr
 			}, dealing ${damage} damage${elementalStr}`);
-			// TODO: deal damage
+			// Deal damage
+			other.health -= damage;
 			return true;
 		} else {
 			// You done failed
