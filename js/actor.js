@@ -49,6 +49,14 @@ class Player extends Actor {
 	get isEnemy() {
 		return false;
 	}
+
+	get health() {
+		return this._health;
+	}
+	set health(n) {
+		this._health = n;
+		State.playerHealthElement.attr('data-value', n);
+	}
 }
 
 class Enemy extends Actor {
@@ -73,6 +81,18 @@ class Enemy extends Actor {
 			case 'her': return 'her';
 			default: return 'its';
 		}
+	}
+
+	get shortName() {
+		return this.name.split(' ').pop();
+	}
+
+	get health() {
+		return this._health;
+	}
+	set health(n) {
+		this._health = n;
+		State.opponentHealthElement.attr('data-value', n);
 	}
 
 	async turn() {

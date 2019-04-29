@@ -3,7 +3,10 @@ const $ = document.q.bind(document);
 document.on('DOMContentLoaded', () => {
 	// Create singletons
 	State = new QuotientState();
+	State.player = new Player();
+	document.body.appendChild(State.nav);
 	document.body.appendChild(State.element);
+	State.playerNameElement.attr('data-value', 'You');
 	// Testing
 	[
 		new Stabby({

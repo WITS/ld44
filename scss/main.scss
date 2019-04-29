@@ -2,6 +2,10 @@
 
 :root {
 	--pad: 24px;
+	--nav-y: 12px;
+	--nav-h: 56px;
+	--nav-spacing: 12px;
+	--nav-size: 25px;
 	--narrator-pad: 48px;
 	--narrator-size: 21px;
 	--intent-pad: 24px;
@@ -23,9 +27,16 @@ html {
 	-webkit-tap-highlight-color: transparent;
 }
 
+body {
+	margin: 84px 0;
+}
+
 @media (min-width: 800px) {
 
 	:root {
+		--nav-y: 0px;
+		--nav-h: 84px;
+		--nav-size: 42px;
 		--narrator-size: 31px;
 		--intent-pad: 32px;
 		--intent-size: 31px;
@@ -36,6 +47,63 @@ html {
 
 	body {
 		margin: 128px 0;
+	}
+}
+
+nav {
+	position: absolute;
+	left: 0;
+	top: var(--nav-y);
+	display: block;
+	width: 100%;
+	height: var(--nav-h);
+
+	.info {
+		position: absolute;
+		padding: 0 var(--pad);
+		height: 100%;
+		line-height: var(--nav-h);
+		font-size: var(--nav-size);
+
+		&.player {
+			left: 0;
+
+			.name {
+				margin-left: var(--nav-spacing);
+			}
+		}
+
+		&.opponent {
+			right: 0;
+
+			.health {
+				margin-left: var(--nav-spacing);
+			}
+		}
+
+		.name {
+			display: inline-block;
+			font-weight: 300;
+			font-size: 0.75em;
+			vertical-align: top;
+
+			&::after {
+				content: attr(data-value);
+			}
+		}
+
+		.health {
+			display: inline-block;
+			font-weight: 500;
+
+			&::before {
+				content: '';
+			}
+
+			&::after {
+				content: attr(data-value);
+			}
+		}
 	}
 }
 

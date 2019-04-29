@@ -43,7 +43,7 @@ class Item {
 				partStr
 			}${withStr}, dealing ${damage} damage${elementalStr}`);
 			// Deal damage
-			other.health -= damage;
+			other.health = Math.max(0, other.health - damage);
 			return true;
 		} else {
 			// You done failed

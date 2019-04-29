@@ -4,12 +4,35 @@ class QuotientState {
 	constructor() {
 		this.counter = 0;
 		this.status = 'travel';
-		this.player = new Player();
+		this.player = null;
 		this.opponent = null;
 		this.messages = [];
 		// The slices in the current intent
 		this.intent = [];
 		this.slices = [];
+	}
+
+	get nav() {
+		if (this._nav == null) {
+			this._nav = this.createNav();
+		}
+		return this._nav;
+	}
+
+	get playerNameElement() {
+		return this.nav.$child.player.$child.name;
+	}
+
+	get playerHealthElement() {
+		return this.nav.$child.player.$child.health;
+	}
+
+	get opponentNameElement() {
+		return this.nav.$child.opponent.$child.name;
+	}
+
+	get opponentHealthElement() {
+		return this.nav.$child.opponent.$child.health;
 	}
 
 	get element() {
@@ -81,6 +104,7 @@ class QuotientState {
 	startBattle(other) {
 		this.status = 'battle';
 		this.opponent = other;
+		State.opponentNameElement.attr('data-value', cap(other.shortName));
 		State.pushMessage(choose(
 				`You nearly bump into ${other.single}`,
 				`You stop just short of ${other.single}`,
@@ -344,8 +368,29 @@ class QuotientState {
 		}
 	}
 
+	createNav() {
+		return $new('nav')
+			.append(
+				$new('.player.info')
+					.name('player')
+					.append(
+						$new('.health').name('health'),
+						$new('.name').name('name')
+						// TODO: elemental
+					),
+				$new('.opponent.info')
+					.name('opponent')
+					.append(
+						$new('.name').name('name'),
+						$new('.health').name('health')
+						// TODO: elemental
+					)
+			)
+			.element();
+	}
+
 	createElement() {
-		return $new('.quotient')
+		return $new('main.quotient')
 			.append(
 				$new('.intent').name('intent'),
 				$new('.slices').name('slices')
