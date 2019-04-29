@@ -109,7 +109,7 @@ html {
         content: ''; }
 
 /* line 122, ../scss/main.scss */
-.intent:empty ~ .slices .slice:first-letter {
+.intent:empty ~ .slices .text:first-letter {
   text-transform: uppercase; }
 
 /*# sourceMappingURL=main.css.map */

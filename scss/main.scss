@@ -119,6 +119,6 @@ html {
 	}
 }
 
-.intent:empty ~ .slices .slice:first-letter {
+.intent:empty ~ .slices .text:first-letter {
 	text-transform: uppercase;
 }
