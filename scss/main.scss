@@ -49,6 +49,10 @@ html {
 	font-size: var(--narrator-size);
 	font-weight: 300;
 	text-align: center;
+
+	+ .narrator {
+		padding-top: calc(0.5 * var(--narrator-pad));
+	}
 }
 
 .intent {

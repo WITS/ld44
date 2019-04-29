@@ -45,37 +45,40 @@ html {
   font-size: var(--narrator-size);
   font-weight: 300;
   text-align: center; }
+  /* line 53, ../scss/main.scss */
+  .narrator + .narrator {
+    padding-top: calc(0.5 * var(--narrator-pad)); }
 
-/* line 54, ../scss/main.scss */
+/* line 58, ../scss/main.scss */
 .intent {
   padding: var(--intent-pad) 0;
   font-size: var(--intent-size);
   text-align: center; }
-  /* line 59, ../scss/main.scss */
+  /* line 63, ../scss/main.scss */
   .intent > :first-child:first-letter {
     text-transform: uppercase; }
 
-/* line 64, ../scss/main.scss */
+/* line 68, ../scss/main.scss */
 .token {
   display: inline-block;
   cursor: pointer; }
-  /* line 68, ../scss/main.scss */
+  /* line 72, ../scss/main.scss */
   .token::after {
     white-space: pre-wrap;
     content: ' '; }
-  /* line 73, ../scss/main.scss */
+  /* line 77, ../scss/main.scss */
   .token:hover {
     text-decoration: underline;
     text-decoration-color: var(--token-underline-color);
     -webkit-text-decoration-color: var(--token-underline-color); }
 
-/* line 80, ../scss/main.scss */
+/* line 84, ../scss/main.scss */
 .slices {
   padding: var(--slices-pad) 0;
   font-size: var(--slice-size);
   font-weight: 500; }
 
-/* line 86, ../scss/main.scss */
+/* line 90, ../scss/main.scss */
 .slice {
   padding: var(--slice-pad) 0;
   text-align: center;
@@ -85,22 +88,22 @@ html {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none; }
-  /* line 93, ../scss/main.scss */
+  /* line 97, ../scss/main.scss */
   .slice .text {
     display: inline-block; }
-  /* line 97, ../scss/main.scss */
+  /* line 101, ../scss/main.scss */
   .slice:hover {
     transform: scale(1.15); }
-  /* line 101, ../scss/main.scss */
+  /* line 105, ../scss/main.scss */
   .slice:active {
     transform: scale(0.87); }
-  /* line 105, ../scss/main.scss */
+  /* line 109, ../scss/main.scss */
   .slice ~ .slice.end-slice {
     margin-top: var(--end-margin); }
-    /* line 108, ../scss/main.scss */
+    /* line 112, ../scss/main.scss */
     .slice ~ .slice.end-slice .text {
       position: relative; }
-      /* line 111, ../scss/main.scss */
+      /* line 115, ../scss/main.scss */
       .slice ~ .slice.end-slice .text::before {
         position: absolute;
         left: 0;
@@ -110,7 +113,7 @@ html {
         border-top: 1px solid rgba(0, 0, 0, 0.1);
         content: ''; }
 
-/* line 124, ../scss/main.scss */
+/* line 128, ../scss/main.scss */
 .intent:empty ~ .slices .text:first-letter {
   text-transform: uppercase; }
 

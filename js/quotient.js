@@ -18,10 +18,6 @@ class QuotientState {
 		return this._element;
 	}
 
-	get narratorElement() {
-		return this.element.$child.narrator;
-	}
-
 	get intentElement() {
 		return this.element.$child.intent;
 	}
@@ -38,15 +34,44 @@ class QuotientState {
 		return this.intent[this.intent.length - 1] || null;
 	}
 
-	pushMessage(text) {
+	async pushMessage(text, options = {}) {
+		// If there is a narrator element before the intent element
+		if (this.intentElement !== this.element.firstChild) {
+			const snapshot = Transition.snapshot(this.intentElement);
+			while (this.intentElement !== this.element.firstChild) {
+				this.element.firstChild.remove();
+			}
+			const dur = 500;
+			Transition.from(this.intentElement, snapshot, dur, {
+				aspectRatio: 'none'
+			});
+			await sleep(dur);
+		}
 		this.messages.push(text);
-		this.narratorElement.textContent = text;
+		const msg = $new('.narrator')
+			.text(text)
+			.element();
+		this.element.insertBefore(msg, options.before || this.slicesElement);
+		const dur = 500;
+		Transition.animate(msg, {
+			from: {
+				transform: `translateY(256px)`,
+				opacity: 0
+			},
+			to: {
+				transform: `none`,
+				opacity: 1
+			}
+		}, dur);
+		await sleep(dur + 250);
 	}
 
 	startBattle(other) {
 		this.status = 'battle';
 		this.opponent = other;
-		State.pushMessage(`You nearly bump into a ${other.name}`);
+		State.pushMessage(`You nearly bump into a ${other.name}`, {
+			before: this.intentElement
+		});
 		// Start up the slices
 		const itemCategories = new Map();
 		const slices = [];
@@ -140,7 +165,21 @@ class QuotientState {
 		// Start the player's next turn
 		const slices = this.intent[0].siblings;
 		this.intent.splice(0);
+		const narrator = new Map();
+		for (let child of this.element.children) {
+			if (child === this.intentElement || child === this.slicesElement) {
+				continue;
+			} else {
+				narrator.set(child, Transition.snapshot(child));
+			}
+		}
 		this.intentElement.empty();
+		this.element.insertBefore(this.intentElement, this.slicesElement);
+		for (let [el, snapshot] of narrator) {
+			Transition.from(el, snapshot, 500, {
+				aspectRatio: 'none'
+			});
+		}
 		this.showSlices(slices);
 	}
 
@@ -242,7 +281,6 @@ class QuotientState {
 	createElement() {
 		return $new('.quotient')
 			.append(
-				$new('.narrator').name('narrator'),
 				$new('.intent').name('intent'),
 				$new('.slices').name('slices')
 			)

@@ -13,7 +13,6 @@ class Item {
 	}
 
 	async use(other = null, part = null) {
-		await sleep(1000);
 		const owner = other === State.player
 			? State.opponent
 			: State.player;
@@ -31,13 +30,14 @@ class Item {
 		if (roll() <= this.accuracy && partRatio !== 0) {
 			// Apply ability
 			const damage = this.power * partRatio;
-			State.pushMessage(`${cap(owner.pronoun)} ${this.description} ${at} ${
+			await State.pushMessage(`${cap(owner.pronoun)} ${this.description} ${at} ${
 				partStr
 			}, dealing ${damage} damage${elementalStr}`);
+			// TODO: deal damage
 			return true;
 		} else {
 			// You done failed
-			State.pushMessage(`${cap(owner.pronoun)} ${this.description} ${at} ${
+			await State.pushMessage(`${cap(owner.pronoun)} ${this.description} ${at} ${
 				partStr}, but ${owner.pronoun} miss${
 				owner === State.player ? '' : 'es'}`);
 			return false;
