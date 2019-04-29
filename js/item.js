@@ -54,14 +54,15 @@ class Item {
 				// Heal
 				const val = Math.round(this.heal * rollRatio);
 				owner.health += val;
-				await State.pushMessage(`${actionStr}, healing ${val} heart(s)`);
+				await State.pushMessage(`${actionStr}, healing ${val} heart${
+					val === 1 ? '' : 's'}`);
 			} else if (this.transfusion) {
 				// Transfusion
 				const val = Math.min(Math.round(this.transfusion * rollRatio), other.health);
 				owner.health += val;
 				other.health -= val;
-				await State.pushMessage(`${actionStr}, stealing ${val} heart(s) from ${
-					other.pronoun}`);
+				await State.pushMessage(`${actionStr}, stealing ${val} heart${
+					val === 1 ? '' : 's'} from ${other.pronoun}`);
 			} else if (this.attack) {
 				// Attack
 				owner.damage *= this.attack;
