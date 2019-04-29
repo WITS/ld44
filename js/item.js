@@ -26,13 +26,18 @@ class Item {
 		const partRatio = part === null
 			? 1
 			: part.hit();
+		// Calculate the with (item) string
+		const withStr = this.category === 'cast'
+			? ''
+			: ` ${choose('with', 'using')} ${owner.possessive} ${this.name}`;
+		// Calculate the elemental string
 		const elementalStr = ''; // TODO
 		if (roll() <= this.accuracy && partRatio !== 0) {
 			// Apply ability
 			const damage = this.power * partRatio;
 			await State.pushMessage(`${cap(owner.pronoun)} ${this.description} ${at} ${
 				partStr
-			}, dealing ${damage} damage${elementalStr}`);
+			}${withStr}, dealing ${damage} damage${elementalStr}`);
 			// Deal damage
 			other.health -= damage;
 			return true;
