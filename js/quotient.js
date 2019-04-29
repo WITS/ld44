@@ -193,6 +193,9 @@ class QuotientState {
 				// Continue the fight
 				this.showSlices(slices);
 			}
+		} else {
+			// Game over
+			this.pushMessage(`You died`);
 		}
 	}
 
