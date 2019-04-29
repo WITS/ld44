@@ -10,6 +10,7 @@
 	--slices-pad: 24px;
 	--slice-pad: 16px;
 	--slice-size: 31px;
+	--end-margin: 12px;
 }
 
 html {
@@ -29,6 +30,8 @@ html {
 		--intent-pad: 32px;
 		--intent-size: 31px;
 		--slice-size: 48px;
+		--slice-pad: 24px;
+		--end-margin: 24px;
 	}
 
 	body {
@@ -91,6 +94,25 @@ html {
 
 	&:active {
 		transform: scale(0.87);
+	}
+
+	.slice ~ &.end-slice {
+		margin-top: var(--end-margin);
+
+		.text {
+			position: relative;
+			display: inline-block;
+
+			&::before {
+				position: absolute;
+				left: 0;
+				top: calc(-0.75 * (var(--slice-pad) + var(--end-margin)));
+				display: block;
+				width: 100%;
+				border-top: 1px solid $black-1;
+				content: '';
+			}
+		}
 	}
 }
 

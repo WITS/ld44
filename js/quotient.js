@@ -124,7 +124,7 @@ class QuotientState {
 		if (this.intent.length !== 0 && this.lastSlice.isEnd === true) {
 			slices.push(new Slice({
 				id: 'end',
-				text: 'end turn',
+				text: 'done',
 				description: '.'
 			}));
 		}
@@ -230,6 +230,13 @@ class Slice {
 			: this.next.length === 0;
 	}
 
+	get specialClasses() {
+		switch (this.id) {
+			case 'end': return 'end-slice';
+			default: return '';
+		}
+	}
+
 	get next() {
 		return this._next.filter(x => !State.intent.includes(x));
 	}
@@ -280,6 +287,7 @@ class Slice {
 
 	createElement() {
 		return $new('.slice')
+			.class(this.specialClasses)
 			.append(
 				$new('span.text')
 					.name('text')
