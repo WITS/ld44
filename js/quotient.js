@@ -2,6 +2,7 @@
 class QuotientState {
 
 	constructor() {
+		this.status = 'travel';
 		this.player = new Player();
 		this.opponent = null;
 		this.messages = [];
@@ -43,6 +44,7 @@ class QuotientState {
 	}
 
 	startBattle(other) {
+		this.status = 'battle';
 		this.opponent = other;
 		State.pushMessage(`You nearly bump into a ${other.name}`);
 		// Start up the slices
@@ -69,7 +71,7 @@ class QuotientState {
 			slices.push(slice);
 			let withSlice = null, inSlice = null;
 			const itemSlices = items.map(x => new Slice({
-				text: x.description,
+				text: x.name,
 				item: x
 			}));
 			const partSlices = other.parts.map(x => new Slice({
@@ -112,6 +114,33 @@ class QuotientState {
 			}
 		}
 		// Show the initial slices
+		this.showSlices(slices);
+	}
+
+	// Handles the next step in a battle
+	async stepBattle() {
+		// Parse the intent
+		let item = null;
+		let part = null;
+		for (let slice of this.intent) {
+			if (slice.item != null) {
+				item = slice.item;
+			}
+			if (slice.part != null) {
+				part = slice.part;
+			}
+		}
+
+		// Attempt to use the item, on the part
+		await item.use(this.opponent, part);
+
+		// Let the enemy take their turn
+		await this.opponent.turn();
+
+		// Start the player's next turn
+		const slices = this.intent[0].siblings;
+		this.intent.splice(0);
+		this.intentElement.empty();
 		this.showSlices(slices);
 	}
 
@@ -193,10 +222,20 @@ class QuotientState {
 		await sleep(250);
 		// If the player was ending their turn
 		if (this.lastSlice.id === 'end') {
-			// TODO
+			// Handle the end of the turn
+			this.endTurn();
 		} else {
 			// Update the currently visible slices
 			this.showSlices(slice.next);
+		}
+	}
+
+	// Ends a turn
+	endTurn() {
+		// Branch based on status
+		switch (this.status) {
+			case 'battle': this.stepBattle(); break;
+			default: break;
 		}
 	}
 

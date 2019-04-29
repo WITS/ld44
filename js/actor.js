@@ -3,8 +3,20 @@ class Actor {
 	constructor(json = {}) {
 		// The name of this actor
 		this.name = json.name || '';
+		// The amount of health that this actor has
+		this.health = json.health || 0;
 		// The items that the actor can currently use
 		this.items = [];
+		if (json.items) {
+			for (let item of json.items) {
+				this.addItem(item);
+			}
+		}
+	}
+
+	addItem(item) {
+		item.owner = this;
+		this.items.push(item);
 	}
 }
 
@@ -12,7 +24,16 @@ class Player extends Actor {
 	
 	constructor(json = {}) {
 		json.name = 'you';
+		json.health = 24;
 		super(json);
+	}
+
+	get pronoun() {
+		return 'you';
+	}
+
+	get possessive() {
+		return 'your';
 	}
 
 	get isPlayer() {
@@ -46,7 +67,11 @@ class Enemy extends Actor {
 			case 'her': return 'her';
 			default: return 'its';
 		}
-	}	
+	}
+
+	async turn() {
+		// TODO
+	}
 }
 
 class BodyPart {
