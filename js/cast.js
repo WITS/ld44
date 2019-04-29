@@ -132,19 +132,40 @@ function createItem() {
 	}
 }
 
+// Picks an adjective for the current progress
+function adj() {
+	if (State.counter < 5) {
+		return choose('rusty', 'wooden', 'cheap', 'flimsy');
+	} else if (State.counter < 10) {
+		return choose('knock-off', 'iron', 'discount', 'steel');
+	} else if (State.counter < 20) {
+		return choose('solid', 'nice', 'heavy', 'light', 'bedazzled');
+	} else {
+		return choose('fancy', 'balanced', 'swift', 'quick', 'true');
+	}
+}
+
 // Reference for creating different Stabby items
 const Stabbies = {
 	sword: () => ({
-
+		name: `${adj()} sword`,
+		power: Math.round(irange(2, 5.5) * State.counter),
+		accuracy: irange(64, 80)
 	}),
 	dagger: () => ({
-
+		name: `${adj()} dagger`,
+		power: Math.round(irange(1, 3) * State.counter),
+		accuracy: irange(80, 92)
 	}),
 	spear: () => ({
-
+		name: `${adj()} spear`,
+		power: Math.round(irange(1, 2) * State.counter),
+		accuracy: irange(88, 96)
 	}),
 	axe: () => ({
-
+		name: `${adj()} axe`,
+		power: Math.round(irange(2, 6.5) * State.counter),
+		accuracy: irange(24, 64)
 	})
 };
 
