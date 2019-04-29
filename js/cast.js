@@ -7,10 +7,21 @@ function createEnemy() {
 
 // Creates a Merchant for shopping
 function createMerchant() {
+	const items = [];
+	while (items.length < 3) {
+		const item = createItem();
+		// If an item with this name already exists
+		if (items.some(x => x.name === item.name)) {
+			// Skip it
+			continue;
+		}
+		items.push(item);
+	}
 	return {
 		name: `${choose('suspicious', 'shady', 'jolly',
 			'young', 'elderly', 'friendly')} ${
-			choose('merchant', 'salesman', 'dealer', 'traveller')}`,
+			choose('merchant', 'dealer', 'traveller')}`,
+		pronoun: choose('he', 'she'),
 		health: 6 + irange(1, 2) * State.counter,
 		parts: [
 			new BodyPart({
@@ -27,10 +38,7 @@ function createMerchant() {
 				difficulty: 50
 			})
 		],
-		items: [
-			createItem(),
-			// new Shooty(choose(...Object.values(Shooties))()),
-		]
+		items: items
 	};
 }
 

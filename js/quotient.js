@@ -96,9 +96,20 @@ class QuotientState {
 		this.intent.splice(0);
 		this.intentElement.empty();
 		this.element.q('.narrator').each(el => el.remove());
-		// TODO: show merchants occasionally
-		++ this.counter;
-		State.startBattle(new Enemy(createEnemy()));
+		// If it's time for a merchant
+		if (this.nextMerchantIn === 0) {
+			// Calculate the next time to show a merchant
+			const [prev1, prev2] = this.prevMerchant;
+			const next = prev1 + prev2;
+			this.prevMerchant = [prev2, next];
+			this.nextMerchantIn = next;
+			// Show a merchant
+			this.startShop(new Enemy(createMerchant()));
+		} else {			
+			++ this.counter;
+			-- this.nextMerchantIn;
+			this.startBattle(new Enemy(createEnemy()));
+		}
 	}
 
 	startBattle(other) {
@@ -267,6 +278,69 @@ class QuotientState {
 			// Game over
 			this.pushMessage(`You died`);
 		}
+	}
+
+	startShop(other) {
+		this.status = 'shop';
+		this.player.damage = 1;
+		this.opponent = other;
+		State.opponentNameElement.attr('data-value', cap(other.shortName));
+		State.pushMessage(choose(
+				`${cap(other.single)} runs up to you`,
+				`You nearly bump into ${other.single}`,
+				`You hear ${other.single} nearby`,
+				`You come across ${other.single}`,
+				`There's ${other.single} directly in front of you`
+			), {
+			before: this.intentElement
+		});
+		// Show the initial slices
+		this.showSlices(this.shopSlices());
+	}
+
+	// Creates slices for the top-level shopping status
+	shopSlices() {
+		const player = this.player;
+		const other = this.opponent;
+		return [
+			new Slice({
+				text: 'buy',
+				description: `buy their`,
+				next: other.items.map(x => new Slice({
+					text: x.category === 'cast'
+						? `${x.name} spell`
+						: x.name,
+					item: x
+				}))
+			}),
+			new Slice({
+				text: 'sell',
+				description: `sell your`,
+				next: player.items.map(x => new Slice({
+					text: x.category === 'cast'
+						? `${x.name} spell`
+						: x.name,
+					item: x
+				}))
+			}),
+			new Slice({
+				id: 'end',
+				text: 'done'
+			})
+		];
+	}
+
+	// Handles the next step while shopping
+	async stepShop() {
+		// Parse the intent
+		let item = null;
+		for (let slice of this.intent) {
+			if (slice.item != null) {
+				item = slice.item;
+			}
+		}
+
+		// TODO
 	}
 
 	// Shows a list of slices

@@ -84,8 +84,8 @@ class Enemy extends Actor {
 
 	get possessive() {
 		switch (this.pronoun) {
-			case 'him': return 'his';
-			case 'her': return 'her';
+			case 'he': return 'his';
+			case 'she': return 'her';
 			default: return 'its';
 		}
 	}

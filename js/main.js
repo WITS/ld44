@@ -31,7 +31,9 @@ document.on('DOMContentLoaded', () => {
 		// 	accuracy: 98
 		// })
 	].map(x => State.player.addItem(x));
-	State.counter = 0;
+	State.counter = 1;
+	State.prevMerchant = [1, 1];
+	State.nextMerchantIn = 0;
 	State.nextEncounter();
 });
 
