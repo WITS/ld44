@@ -452,12 +452,21 @@ class QuotientState {
 				const { item } = this.meta;
 				this.player.addItem(item);
 				this.opponent.items.splice(this.opponent.items.indexOf(item), 1);
-				// Start fighting them
-				await this.pushMessage(`You grab the ${item.name}, but ${
-					this.opponent.the} blocks your path`);
-				this.startBattle(this.opponent, {
-					isTheft: true
-				});
+				// If this was their last item
+				if (this.opponent.items.length === 0) {
+					await this.pushMessage(`You grab the ${item.name} and run past ${
+						this.opponent.the
+					}`);
+					await sleep(750);
+					this.nextEncounter();
+				} else {
+					// Start fighting them
+					await this.pushMessage(`You grab the ${item.name}, but ${
+						this.opponent.the} blocks your path`);
+					this.startBattle(this.opponent, {
+						isTheft: true
+					});
+				}
 				return;
 			} else {
 				// If the player offered to pay the previous price
