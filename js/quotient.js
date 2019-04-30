@@ -119,7 +119,7 @@ class QuotientState {
 		this.player.damage = 1;
 		this.opponent = other;
 		this.meta = {
-			reward: Math.ceil(other.health * 0.25),
+			reward: Math.ceil(other.health * 0.5),
 			options: options
 		};
 		State.opponentNameElement.attr('data-value', cap(other.shortName));

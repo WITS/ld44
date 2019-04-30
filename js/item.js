@@ -63,7 +63,7 @@ class Item {
 				owner.health += val;
 				other.health -= val;
 				await State.pushMessage(`${actionStr}, stealing ${val} heart${
-					val === 1 ? '' : 's'} from ${other.pronoun}`, options.message);
+					val === 1 ? '' : 's'} from ${other.object}`, options.message);
 			} else if (this.attack) {
 				// Attack
 				owner.damage *= this.attack;

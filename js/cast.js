@@ -131,7 +131,8 @@ const Enemies = {
 	orc: () => ({
 		name: `${choose('vicious', 'devious', 'huge', 'tiny',
 			'hearty', 'relucant')} orc`,
-		health: 6 + irange(1, 3 * State.counter),
+		health: 8 + irange(2, scale(5)),
+		damage: 0.5,
 		fire: 1,
 		water: 1,
 		air: 0.5,
@@ -156,8 +157,8 @@ const Enemies = {
 				name: 'appendage',
 				description: choose('punches', 'kicks', 'charges'),
 				redundantName: true,
-				power: scale(8),
-				accuracy: 80
+				power: scale(2),
+				accuracy: 70
 			}),
 			createItem(),
 			createItem()
@@ -166,7 +167,8 @@ const Enemies = {
 	barbarian: () => ({
 		name: `${choose('vicious', 'devious', 'cruel', 'garish',
 			'hearty', 'overzealous', 'relucant')} barbarian`,
-		health: 6 + irange(1, 3 * State.counter),
+		health: 4 + irange(0, scale(2)),
+		damage: 0.8,
 		fire: 2,
 		water: 1,
 		air: 2,
@@ -196,13 +198,13 @@ const Enemies = {
 				name: 'appendage',
 				description: choose('punches', 'kicks'),
 				redundantName: true,
-				power: scale(8),
+				power: scale(6),
 				accuracy: 80
 			}),
 			new Ability({
 				name: 'head',
 				description: 'headbutts',
-				power: scale(5),
+				power: scale(4),
 				accuracy: 60
 			})
 		]
@@ -262,7 +264,7 @@ function adj() {
 
 // Scales a value based on progress
 function scale(n) {
-	return irange(n, n * State.counter);
+	return irange(n, Math.ceil(n * State.counter * 0.75));
 }
 
 // Reference for creating different Stabby items
@@ -342,7 +344,7 @@ const Spells = {
 	heal: () => ({
 		name: `${choose('enchanted ', 'quick ', 'amulet of ')
 			}${choose('healing', 'heart')}`,
-		heal: irange(1, 2) * State.counter,
+		heal: irange(1, scale(2)),
 		accuracy: 100,
 		price: 2 + irange(1, Math.round(2 * State.counter))
 	}),
