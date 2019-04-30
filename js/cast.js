@@ -19,8 +19,7 @@ function createMerchant() {
 	}
 	return {
 		name: `${choose('suspicious', 'shady', 'jolly',
-			'young', 'elderly', 'friendly')} ${
-			choose('merchant', 'dealer', 'traveller')}`,
+			'young', 'elderly', 'friendly')} merchant`,
 		pronoun: choose('he', 'she'),
 		health: 6 + irange(1, 2) * State.counter,
 		parts: [
@@ -88,7 +87,7 @@ const Enemies = {
 		]
 	}),
 	goblin: () => ({
-		name: `${choose('vicious', 'devious', 'plus-sized',
+		name: `${choose('vicious', 'devious',
 			'hearty', 'overzealous', 'ambidextrous')} goblin`,
 		health: 6 + irange(1, 2) * State.counter,
 		fire: 2,
@@ -158,25 +157,25 @@ const Stabbies = {
 	sword: () => ({
 		name: `${adj()} sword`,
 		power: Math.round(irange(2, 5.5) * State.counter),
-		accuracy: irange(64, 80),
+		accuracy: irange(80, 92),
 		price: 2 + irange(1, Math.round(2 * State.counter))
 	}),
 	dagger: () => ({
 		name: `${adj()} dagger`,
 		power: Math.round(irange(1, 3) * State.counter),
-		accuracy: irange(80, 92),
+		accuracy: irange(84, 96),
 		price: 2 + irange(1, Math.round(2 * State.counter))
 	}),
 	spear: () => ({
 		name: `${adj()} spear`,
 		power: Math.round(irange(1, 2) * State.counter),
-		accuracy: irange(88, 96),
+		accuracy: irange(92, 96),
 		price: 2 + irange(1, Math.round(2 * State.counter))
 	}),
 	axe: () => ({
 		name: `${adj()} axe`,
 		power: Math.round(irange(2, 6.5) * State.counter),
-		accuracy: irange(24, 64),
+		accuracy: irange(76, 88),
 		price: 2 + irange(1, Math.round(2 * State.counter))
 	})
 };

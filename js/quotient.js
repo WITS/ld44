@@ -405,10 +405,12 @@ class QuotientState {
 					text: 'offer to pay',
 					next: [
 						new Slice({
-							text: 'full price'
+							text: 'full price',
+							price: item.price
 						}),
 						new Slice({
-							text: `${halfPrice} heart${halfPrice > 1 ? 's' : ''}`
+							text: `${halfPrice} heart${halfPrice > 1 ? 's' : ''}`,
+							price: halfPrice
 						})
 					]
 				}),
