@@ -20,21 +20,10 @@ document.on('DOMContentLoaded', () => {
 		}),
 		new Spell(s1()),
 		new Spell(choose(...s)())
-		// new Shooty({
-		// 	name: 'longbow',
-		// 	power: 5,
-		// 	accuracy: 60
-		// }),
-		// new Spell({
-		// 	name: 'fireball',
-		// 	power: 2,
-		// 	fire: 1,
-		// 	accuracy: 98
-		// })
 	].map(x => State.player.addItem(x));
-	State.counter = 1;
+	State.counter = 0;
 	State.prevMerchant = [1, 1];
-	State.nextMerchantIn = 0;
+	State.nextMerchantIn = 1;
 	State.nextEncounter();
 });
 

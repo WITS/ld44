@@ -41,7 +41,7 @@ class Item {
 		const r = roll();
 		if (r <= this.accuracy && partRatio !== 0) {
 			// Calculate special modifiers based on effectiveness
-			const rollRatio = 0.5 + 1.5 * r / this.accuracy;
+			const rollRatio = 0.75 + 1.5 * r / this.accuracy;
 			// Calculate the elemental damage
 			const elemental =
 				(this.fire * other.fire) +

@@ -7,7 +7,7 @@ class QuotientState {
 		this.player = null;
 		this.opponent = null;
 		this.messages = [];
-		this.shopMeta = {};
+		this.meta = {};
 		// The slices in the current intent
 		this.intent = [];
 		this.slices = [];
@@ -117,6 +117,10 @@ class QuotientState {
 		this.status = 'battle';
 		this.player.damage = 1;
 		this.opponent = other;
+		this.meta = {
+			reward: Math.ceil(other.health * 0.25),
+			options: options
+		};
 		State.opponentNameElement.attr('data-value', cap(other.shortName));
 		if (options.isTheft !== true) {
 			State.pushMessage(choose(
@@ -132,11 +136,7 @@ class QuotientState {
 				before: this.intentElement
 			});
 		} else {
-			await other.turn(/*{
-				message: {
-					before: this.intentElement
-				}
-			}*/);
+			await other.turn();
 			// If they killed you already
 			if (this.player.health <= 0) {
 				// Stop here
@@ -261,7 +261,16 @@ class QuotientState {
 				}
 				// Update the current text
 				await sleep(dur);
-				await this.pushMessage(`You defeated the ${this.opponent.name}!`, {
+				// Reward the player
+				let rewardStr = '';
+				if (!this.meta.options.isTheft) {
+					const reward = this.meta.reward;
+					this.player.health += reward;
+					rewardStr = ` and gained ${reward} heart${
+						reward > 1 ? 's' : ''
+					}`;
+				}
+				await this.pushMessage(`You defeated the ${this.opponent.name}${rewardStr}!`, {
 					before: this.intentElement
 				});
 				// Let the player continue
@@ -349,7 +358,7 @@ class QuotientState {
 		} else if (type === 'sell') {
 			// Offer to buy it for a reduced price
 			const val = Math.ceil(item.price * 0.75);
-			this.shopMeta = {
+			this.meta = {
 				status: 'sell',
 				item: item,
 				hearts: val
@@ -370,8 +379,7 @@ class QuotientState {
 		} else if (type === 'deal' || type === 'no deal') { // Sell: Response
 			// Accept
 			if (type === 'deal') {
-				await this.pushMessage(`Pleasure doing business with you`);
-				const { status, item, hearts } = this.shopMeta;
+				const { status, item, hearts } = this.meta;
 				if (status === 'sell') {
 					this.player.health += hearts;
 					this.opponent.addItem(item);
@@ -381,16 +389,17 @@ class QuotientState {
 					this.player.addItem(item);
 					this.opponent.items.splice(this.opponent.items.indexOf(item), 1);
 				}
+				await this.pushMessage(`Pleasure doing business with you`);
 			} else {
 				await this.pushMessage(`No worries`);
 			}
-			this.shopMeta = {};
+			this.meta = {};
 			await this.pushMessage(`Is there anything else you're interested in?`);
 			this.resetIntent();
 			await this.showSlices(this.shopSlices());
 		} else if (type === 'buy') { // Buy
 			// Offer to sell it for full price
-			this.shopMeta = {
+			this.meta = {
 				status: 'buy',
 				item: item,
 				hearts: item.price,
@@ -423,13 +432,13 @@ class QuotientState {
 					text: 'nevermind'
 				})
 			]);
-		} else if (this.shopMeta.status === 'buy') {
+		} else if (this.meta.status === 'buy') {
 			// Accept
 			if (type === 'nevermind') {
 				await this.pushMessage(`No worries`);
 			} else if (type === 'steal it') {
 				// Add the item to your inventory
-				const { item } = this.shopMeta;
+				const { item } = this.meta;
 				this.player.addItem(item);
 				this.opponent.items.splice(this.opponent.items.indexOf(item), 1);
 				// Start fighting them
@@ -442,23 +451,23 @@ class QuotientState {
 			} else {
 				// If the player offered to pay the previous price
 				const offer = this.intent[1].price;
-				const { item, hearts, isFullPrice } = this.shopMeta;
+				const { item, hearts, isFullPrice } = this.meta;
 				if (offer === hearts || roll() <= 25) {
-					await this.pushMessage(`Pleasure doing business with you`);
 					this.player.health -= offer;
 					this.player.addItem(item);
 					this.opponent.items.splice(this.opponent.items.indexOf(item), 1);
+					await this.pushMessage(`Pleasure doing business with you`);
 				} else if (isFullPrice) {
 					if (roll() <= 50) {
 						// Meet the player halfway
-						this.shopMeta.isFullPrice = false;
-						this.shopMeta.hearts = Math.ceil(hearts * 0.75);
-						await this.pushMessage(`I can do ${this.shopMeta.hearts}`);
+						this.meta.isFullPrice = false;
+						this.meta.hearts = Math.ceil(hearts * 0.75);
+						await this.pushMessage(`I can do ${this.meta.hearts}`);
 					} else {
 						// I'm not going to play this game
-						this.shopMeta.isFullPrice = false;
-						this.shopMeta.hearts = Math.ceil(hearts * 1.2);
-						await this.pushMessage(`How about ${this.shopMeta.hearts}?`);
+						this.meta.isFullPrice = false;
+						this.meta.hearts = Math.ceil(hearts * 1.2);
+						await this.pushMessage(`How about ${this.meta.hearts}?`);
 					}
 					this.resetIntent();
 					await this.showSlices([
@@ -474,7 +483,7 @@ class QuotientState {
 					return;
 				}
 			}
-			this.shopMeta = {};
+			this.meta = {};
 			await this.pushMessage(`Is there anything else you're interested in?`);
 			this.resetIntent();
 			await this.showSlices(this.shopSlices());
