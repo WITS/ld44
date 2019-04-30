@@ -155,6 +155,7 @@ const Enemies = {
 			new Ability({
 				name: 'appendage',
 				description: choose('punches', 'kicks', 'charges'),
+				redundantName: true,
 				power: scale(8),
 				accuracy: 80
 			}),
@@ -194,6 +195,7 @@ const Enemies = {
 			new Ability({
 				name: 'appendage',
 				description: choose('punches', 'kicks'),
+				redundantName: true,
 				power: scale(8),
 				accuracy: 80
 			}),
