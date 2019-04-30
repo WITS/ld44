@@ -247,6 +247,8 @@ class QuotientState {
 		if (this.player.health > 0) {
 			// If the opponent is done for
 			if (this.opponent.health <= 0) {
+				// Wait a moment, so the player can read the text
+				await sleep(750);
 				// Fade out the current text
 				const dur = 500;
 				for (let child of this.element.children) {
