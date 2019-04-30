@@ -33,7 +33,7 @@ body {
   /* line 36, ../scss/main.scss */
   :root {
     --pad: 24px;
-    --nav-y: 0px;
+    --nav-y: -96px;
     --nav-h: 84px;
     --nav-spacing: 12px;
     --nav-size: 42px;
@@ -46,8 +46,10 @@ body {
 
   /* line 50, ../scss/main.scss */
   body {
-    margin: 128px 0; } }
-/* line 55, ../scss/main.scss */
+    position: relative;
+    margin: 128px auto;
+    max-width: 1024px; } }
+/* line 57, ../scss/main.scss */
 nav {
   position: absolute;
   left: 0;
@@ -55,36 +57,36 @@ nav {
   display: block;
   width: 100%;
   height: var(--nav-h); }
-  /* line 63, ../scss/main.scss */
+  /* line 65, ../scss/main.scss */
   nav .info {
     position: absolute;
     padding: 0 var(--pad);
     height: 100%;
     line-height: var(--nav-h);
     font-size: var(--nav-size); }
-    /* line 70, ../scss/main.scss */
+    /* line 72, ../scss/main.scss */
     nav .info.player {
       left: 0; }
-    /* line 78, ../scss/main.scss */
+    /* line 80, ../scss/main.scss */
     nav .info.opponent {
       right: 0; }
-    /* line 86, ../scss/main.scss */
+    /* line 88, ../scss/main.scss */
     nav .info .name {
       display: inline-block;
       font-weight: 300;
       font-size: 0.75em;
       vertical-align: top; }
-      /* line 92, ../scss/main.scss */
+      /* line 94, ../scss/main.scss */
       nav .info .name::after {
         content: attr(data-value); }
-    /* line 97, ../scss/main.scss */
+    /* line 99, ../scss/main.scss */
     nav .info .health {
       display: inline-block;
       font-weight: 500; }
-    /* line 102, ../scss/main.scss */
+    /* line 104, ../scss/main.scss */
     nav .info.player .health::before, nav .info.opponent .health::after {
       content: attr(data-value); }
-    /* line 107, ../scss/main.scss */
+    /* line 109, ../scss/main.scss */
     nav .info.player .health::after, nav .info.opponent .health::before {
       -moz-osx-font-smoothing: grayscale;
       -webkit-font-smoothing: antialiased;
@@ -101,53 +103,53 @@ nav {
       vertical-align: top;
       content: '\f004'; }
 
-/* line 119, ../scss/main.scss */
+/* line 121, ../scss/main.scss */
 .quotient {
   padding: 0 var(--pad); }
 
-/* line 123, ../scss/main.scss */
+/* line 125, ../scss/main.scss */
 .narrator {
   padding: var(--narrator-pad) 0;
   padding-bottom: 0;
   font-size: var(--narrator-size);
   font-weight: 300;
   text-align: center; }
-  /* line 130, ../scss/main.scss */
+  /* line 132, ../scss/main.scss */
   .narrator + .narrator {
     padding-top: calc(0.5 * var(--narrator-pad)); }
 
-/* line 135, ../scss/main.scss */
+/* line 137, ../scss/main.scss */
 .intent {
   padding: var(--intent-pad) 0;
   font-size: var(--intent-size);
   text-align: center; }
-  /* line 140, ../scss/main.scss */
+  /* line 142, ../scss/main.scss */
   .intent > :first-child:first-letter {
     text-transform: uppercase; }
 
-/* line 145, ../scss/main.scss */
+/* line 147, ../scss/main.scss */
 .token {
   display: inline-block; }
-  /* line 148, ../scss/main.scss */
+  /* line 150, ../scss/main.scss */
   .token::after {
     white-space: pre-wrap;
     content: ' '; }
-  /* line 153, ../scss/main.scss */
+  /* line 155, ../scss/main.scss */
   .narrator ~ .intent .token {
     cursor: pointer; }
-    /* line 156, ../scss/main.scss */
+    /* line 158, ../scss/main.scss */
     .narrator ~ .intent .token:hover {
       text-decoration: underline;
       text-decoration-color: var(--token-underline-color);
       -webkit-text-decoration-color: var(--token-underline-color); }
 
-/* line 164, ../scss/main.scss */
+/* line 166, ../scss/main.scss */
 .slices {
   padding: var(--slices-pad) 0;
   font-size: var(--slice-size);
   font-weight: 500; }
 
-/* line 170, ../scss/main.scss */
+/* line 172, ../scss/main.scss */
 .slice {
   padding: var(--slice-pad) 0;
   text-align: center;
@@ -157,22 +159,22 @@ nav {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none; }
-  /* line 177, ../scss/main.scss */
+  /* line 179, ../scss/main.scss */
   .slice .text {
     display: inline-block; }
-  /* line 181, ../scss/main.scss */
+  /* line 183, ../scss/main.scss */
   .slice:hover {
     transform: scale(1.15); }
-  /* line 185, ../scss/main.scss */
+  /* line 187, ../scss/main.scss */
   .slice:active {
     transform: scale(1); }
-  /* line 190, ../scss/main.scss */
+  /* line 192, ../scss/main.scss */
   .slice ~ .slice.end-slice:last-child {
     margin-top: var(--end-margin); }
-    /* line 193, ../scss/main.scss */
+    /* line 195, ../scss/main.scss */
     .slice ~ .slice.end-slice:last-child .text {
       position: relative; }
-      /* line 196, ../scss/main.scss */
+      /* line 198, ../scss/main.scss */
       .slice ~ .slice.end-slice:last-child .text::before {
         position: absolute;
         left: 0;
@@ -182,7 +184,7 @@ nav {
         border-top: 1px solid rgba(0, 0, 0, 0.1);
         content: ''; }
 
-/* line 209, ../scss/main.scss */
+/* line 211, ../scss/main.scss */
 .intent:empty ~ .slices .text:first-letter {
   text-transform: uppercase; }
 
