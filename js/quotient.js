@@ -163,7 +163,7 @@ class QuotientState {
 					? cat
 					: 'cast a spell',
 				description: cat !== 'cast'
-					? `${cat} the ${other.name}`
+					? `${cat} ${other.the}`
 					: cat,
 				isEnd: cat !== 'cast'
 			});
@@ -271,7 +271,7 @@ class QuotientState {
 						reward > 1 ? 's' : ''
 					}`;
 				}
-				await this.pushMessage(`You defeated the ${this.opponent.name}${rewardStr}!`, {
+				await this.pushMessage(`You defeated ${this.opponent.the}${rewardStr}!`, {
 					before: this.intentElement
 				});
 				// Let the player continue
@@ -451,8 +451,8 @@ class QuotientState {
 				this.player.addItem(item);
 				this.opponent.items.splice(this.opponent.items.indexOf(item), 1);
 				// Start fighting them
-				await this.pushMessage(`You grab the ${item.name}, but the ${
-					this.opponent.name} blocks your path`);
+				await this.pushMessage(`You grab the ${item.name}, but ${
+					this.opponent.the} blocks your path`);
 				this.startBattle(this.opponent, {
 					isTheft: true
 				});

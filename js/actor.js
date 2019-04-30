@@ -22,9 +22,18 @@ class Actor {
 	}
 
 	get single() {
-		return ('aeiou'.indexOf(this.name[0]) !== -1)
-			? `an ${this.name}`
-			: `a ${this.name}`;
+		return this.name[0].toUpperCase() === this.name[0]
+			? this.name
+			: ('aeiou'.indexOf(this.name[0]) !== -1
+				? `an ${this.name}`
+				: `a ${this.name}`
+			);
+	}
+
+	get the() {
+		return this.name[0].toUpperCase() === this.name[0]
+			? this.name
+			: `the ${this.name}`;	
 	}
 
 	addItem(item) {

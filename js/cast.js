@@ -67,20 +67,20 @@ const Enemies = {
 		items: [
 			new Stabby({
 				name: 'claws',
-				power: 3,
+				power: scale(3),
 				accuracy: 90
 			}),
 			new Ability({
 				name: 'teeth',
 				description: 'bites',
-				power: 5,
+				power: scale(5),
 				accuracy: 60
 			}),
 			new Ability({
 				name: 'firebreath',
 				description: 'breathes fire',
 				redundantName: true,
-				power: 2,
+				power: scale(2),
 				fire: 1,
 				accuracy: 80
 			})
@@ -112,20 +112,126 @@ const Enemies = {
 		items: [
 			new Stabby({
 				name: 'claws',
-				power: 3,
+				power: scale(3),
 				accuracy: 90
 			}),
 			new Stabby({
 				name: 'dagger',
-				power: 4,
+				power: scale(4),
 				accuracy: 80
 			}),
 			new Ability({
 				name: 'teeth',
 				description: 'bites',
-				power: 5,
+				power: scale(5),
 				accuracy: 60
 			})
+		]
+	}),
+	orc: () => ({
+		name: `${choose('vicious', 'devious', 'huge', 'tiny',
+			'hearty', 'relucant')} orc`,
+		health: 6 + irange(1, 3 * State.counter),
+		fire: 1,
+		water: 1,
+		air: 0.5,
+		earth: 2,
+		parts: [
+			new BodyPart({
+				name: choose('chest', 'body', 'torso')
+			}),
+			new BodyPart({
+				name: choose('neck', 'face', 'head'),
+				damage: 3,
+				difficulty: 67
+			}),
+			new BodyPart({
+				name: choose('arm', 'leg'),
+				damage: 2,
+				difficulty: 50
+			})
+		],
+		items: [
+			new Ability({
+				name: 'appendage',
+				description: choose('punches', 'kicks', 'charges'),
+				power: scale(8),
+				accuracy: 80
+			}),
+			createItem(),
+			createItem()
+		]
+	}),
+	barbarian: () => ({
+		name: `${choose('vicious', 'devious', 'cruel', 'garish',
+			'hearty', 'overzealous', 'relucant')} barbarian`,
+		health: 6 + irange(1, 3 * State.counter),
+		fire: 2,
+		water: 1,
+		air: 2,
+		earth: 1,
+		parts: [
+			new BodyPart({
+				name: choose('chest', 'body', 'torso')
+			}),
+			new BodyPart({
+				name: choose('neck', 'face', 'head'),
+				damage: 3,
+				difficulty: 67
+			}),
+			new BodyPart({
+				name: choose('arm', 'leg'),
+				damage: 2,
+				difficulty: 50
+			})
+		],
+		items: [
+			new Stabby({
+				name: 'dagger',
+				power: scale(4),
+				accuracy: 80
+			}),
+			new Ability({
+				name: 'appendage',
+				description: choose('punches', 'kicks'),
+				power: scale(8),
+				accuracy: 80
+			}),
+			new Ability({
+				name: 'head',
+				description: 'headbutts',
+				power: scale(5),
+				accuracy: 60
+			})
+		]
+	}),
+	human: () => ({
+		name: `${choose('Dave', 'Matt', 'Jeff', 'George', 'Joe', 'Billy')} the ${
+			cap(choose('loser', 'mouthbreather', 'kid', 'fool', 'jester',
+				'joker', 'lame'))}`,
+		pronoun: 'he',
+		health: 6 + irange(1, 4 * State.counter),
+		fire: 2,
+		water: 0.5,
+		parts: [
+			new BodyPart({
+				name: choose('chest', 'body', 'torso')
+			}),
+			new BodyPart({
+				name: choose('neck', 'face', 'head'),
+				damage: 3,
+				difficulty: 67
+			}),
+			new BodyPart({
+				name: choose('arm', 'leg'),
+				damage: 2,
+				difficulty: 50
+			})
+		],
+		items: [
+			createItem(),
+			createItem(),
+			createItem()
 		]
 	})
 };
@@ -150,6 +256,11 @@ function adj() {
 	} else {
 		return choose('fancy', 'balanced', 'swift', 'quick', 'true');
 	}
+}
+
+// Scales a value based on progress
+function scale(n) {
+	return irange(n, n * State.counter);
 }
 
 // Reference for creating different Stabby items
