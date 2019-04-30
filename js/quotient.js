@@ -5,6 +5,7 @@ class QuotientState {
 		this.counter = 0;
 		this.status = 'travel';
 		this.player = null;
+		this.lastStabby = null;
 		this.opponent = null;
 		this.messages = [];
 		this.meta = {};
@@ -219,7 +220,7 @@ class QuotientState {
 	// Handles the next step in a battle
 	async stepBattle() {
 		// Parse the intent
-		let item = null;
+		let item = this.lastStabby;
 		let part = null;
 		for (let slice of this.intent) {
 			if (slice.item != null) {
@@ -384,6 +385,14 @@ class QuotientState {
 					this.player.health += hearts;
 					this.opponent.addItem(item);
 					this.player.items.splice(this.player.items.indexOf(item), 1);
+					if (this.lastStabby === item) {
+						for (let item of this.player.items) {
+							if (item instanceof Stabby) {
+								this.lastStabby = item;
+								break;
+							}
+						}
+					}
 				} else {
 					this.player.health -= hearts;
 					this.player.addItem(item);

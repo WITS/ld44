@@ -46,7 +46,7 @@ const Enemies = {
 	dragon: () => ({
 		name: `${choose('red', 'blue', 'relucant', 'baby',
 			'tiny', 'chonky', 'seductive')} dragon`,
-		health: 8 + irange(1, 6 * State.counter),
+		health: 8 + irange(2, 8 * State.counter),
 		fire: 0,
 		water: 2,
 		parts: [
@@ -141,11 +141,11 @@ function createItem() {
 
 // Picks an adjective for the current progress
 function adj() {
-	if (State.counter < 5) {
+	if (State.counter < 3) {
 		return choose('rusty', 'wooden', 'cheap', 'flimsy');
-	} else if (State.counter < 10) {
+	} else if (State.counter < 5) {
 		return choose('knock-off', 'iron', 'discount', 'steel');
-	} else if (State.counter < 20) {
+	} else if (State.counter < 8) {
 		return choose('solid', 'nice', 'heavy', 'light', 'bedazzled');
 	} else {
 		return choose('fancy', 'balanced', 'swift', 'quick', 'true');

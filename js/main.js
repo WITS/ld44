@@ -21,6 +21,7 @@ document.on('DOMContentLoaded', () => {
 		new Spell(s1()),
 		new Spell(choose(...s)())
 	].map(x => State.player.addItem(x));
+	State.lastStabby = State.player.items[0];
 	State.counter = 0;
 	State.prevMerchant = [1, 1];
 	State.nextMerchantIn = 1;

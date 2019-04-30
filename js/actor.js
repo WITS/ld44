@@ -68,6 +68,14 @@ class Player extends Actor {
 		this._health = n;
 		State.playerHealthElement.attr('data-value', n);
 	}
+
+	addItem(item) {
+		super.addItem(item);
+		// if this is a new Stabby for the Player
+		if (item instanceof Stabby) {
+			State.lastStabby = item;
+		}
+	}
 }
 
 class Enemy extends Actor {
