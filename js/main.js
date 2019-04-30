@@ -15,7 +15,8 @@ document.on('DOMContentLoaded', () => {
 		new Stabby({
 			name: 'rusty sword',
 			power: 3,
-			accuracy: 92
+			accuracy: 92,
+			price: 5
 		}),
 		new Spell(s1()),
 		new Spell(choose(...s)())

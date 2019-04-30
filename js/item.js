@@ -5,6 +5,7 @@ class Item {
 		this.name = json.name;
 		this._description = json.description || json.name;
 		this.redundantName = json.redundantName || false;
+		this.price = json.price || 0;
 		this.power = json.power || 0;
 		this.fire = json.fire || 0;
 		this.water = json.water || 0;
@@ -17,7 +18,7 @@ class Item {
 		this.accuracy = json.accuracy || 0;
 	}
 
-	async use(other = null, part = null) {
+	async use(other = null, part = null, options = {}) {
 		const owner = other === State.player
 			? State.opponent
 			: State.player;
@@ -26,7 +27,7 @@ class Item {
 			: 'at';
 		// Calculate the part string
 		const partStr = part === null
-			? other.pronoun
+			? other.object
 			: `${other.possessive} ${part.name}`;
 		const partRatio = part === null
 			? 1
@@ -47,44 +48,47 @@ class Item {
 				(this.water * other.water) +
 				(this.air * other.air) +
 				(this.earth * other.earth);
-			const actionStr = `${cap(owner.pronoun)} ${this.description} ${at} ${
-				partStr}${withStr}`;
+			const actionStr = `${cap(owner.pronoun)} ${this.description}` +
+				(this.heal ? '' : ` ${at} ${partStr}${withStr}`);
 			// Apply ability
 			if (this.heal) {
 				// Heal
 				const val = Math.round(this.heal * rollRatio);
 				owner.health += val;
 				await State.pushMessage(`${actionStr}, healing ${val} heart${
-					val === 1 ? '' : 's'}`);
+					val === 1 ? '' : 's'}`, options.message);
 			} else if (this.transfusion) {
 				// Transfusion
 				const val = Math.min(Math.round(this.transfusion * rollRatio), other.health);
 				owner.health += val;
 				other.health -= val;
 				await State.pushMessage(`${actionStr}, stealing ${val} heart${
-					val === 1 ? '' : 's'} from ${other.pronoun}`);
+					val === 1 ? '' : 's'} from ${other.pronoun}`, options.message);
 			} else if (this.attack) {
 				// Attack
 				owner.damage *= this.attack;
-				await State.pushMessage(`${actionStr}, raising ${owner.possessive} attack`);
+				await State.pushMessage(`${actionStr}, raising ${owner.possessive} attack`,
+					options.message);
 			} else if (this.defense) {
 				// Defense
 				owner.damage /= this.defense;
-				await State.pushMessage(`${actionStr}, raising ${owner.possessive} defense`);
+				await State.pushMessage(`${actionStr}, raising ${owner.possessive} defense`,
+					options.message);
 			} else {
 				// Damage (traditional / elemental)
 				const damage = Math.round((this.power + elemental)
 					* owner.damage * partRatio * rollRatio);
 				// Deal damage
 				other.health = Math.max(0, other.health - damage);
-				await State.pushMessage(`${actionStr}, dealing ${damage} damage${elementalStr}`);
+				await State.pushMessage(`${actionStr}, dealing ${damage} damage${elementalStr}`,
+					options.message);
 			}
 			return true;
 		} else {
 			// You done failed
 			await State.pushMessage(`${cap(owner.pronoun)} ${this.description} ${at} ${
 				partStr}, but ${owner.pronoun} miss${
-				owner === State.player ? '' : 'es'}`);
+				owner === State.player ? '' : 'es'}`, options.message);
 			return false;
 		}
 	}

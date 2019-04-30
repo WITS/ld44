@@ -167,13 +167,13 @@ nav {
   .slice:active {
     transform: scale(1); }
   /* line 190, ../scss/main.scss */
-  .slice ~ .slice.end-slice {
+  .slice ~ .slice.end-slice:last-child {
     margin-top: var(--end-margin); }
     /* line 193, ../scss/main.scss */
-    .slice ~ .slice.end-slice .text {
+    .slice ~ .slice.end-slice:last-child .text {
       position: relative; }
       /* line 196, ../scss/main.scss */
-      .slice ~ .slice.end-slice .text::before {
+      .slice ~ .slice.end-slice:last-child .text::before {
         position: absolute;
         left: 0;
         top: calc(-0.75 * (var(--slice-pad) + var(--end-margin)));

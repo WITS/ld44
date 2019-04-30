@@ -158,22 +158,26 @@ const Stabbies = {
 	sword: () => ({
 		name: `${adj()} sword`,
 		power: Math.round(irange(2, 5.5) * State.counter),
-		accuracy: irange(64, 80)
+		accuracy: irange(64, 80),
+		price: 2 + irange(1, Math.round(2 * State.counter))
 	}),
 	dagger: () => ({
 		name: `${adj()} dagger`,
 		power: Math.round(irange(1, 3) * State.counter),
-		accuracy: irange(80, 92)
+		accuracy: irange(80, 92),
+		price: 2 + irange(1, Math.round(2 * State.counter))
 	}),
 	spear: () => ({
 		name: `${adj()} spear`,
 		power: Math.round(irange(1, 2) * State.counter),
-		accuracy: irange(88, 96)
+		accuracy: irange(88, 96),
+		price: 2 + irange(1, Math.round(2 * State.counter))
 	}),
 	axe: () => ({
 		name: `${adj()} axe`,
 		power: Math.round(irange(2, 6.5) * State.counter),
-		accuracy: irange(24, 64)
+		accuracy: irange(24, 64),
+		price: 2 + irange(1, Math.round(2 * State.counter))
 	})
 };
 
@@ -192,7 +196,8 @@ const Spells = {
 			}${choose('ball', 'wave', 'blast')}`,
 		power: irange(0, 2) * State.counter,
 		fire: irange(1, 4) * State.counter,
-		accuracy: irange(90, 100)
+		accuracy: irange(90, 100),
+		price: 2 + irange(1, Math.round(2 * State.counter))
 	}),
 	// Deals water damage
 	water: () => ({
@@ -200,7 +205,8 @@ const Spells = {
 			}${choose('needle', 'wave', 'blast', 'splash')}`,
 		power: irange(0, 1) * State.counter,
 		water: irange(1, 5) * State.counter,
-		accuracy: irange(90, 100)
+		accuracy: irange(90, 100),
+		price: 2 + irange(1, Math.round(2 * State.counter))
 	}),
 	// Deals wind damage
 	wind: () => ({
@@ -208,7 +214,8 @@ const Spells = {
 			}${choose('slash', 'slice', 'thrust')}`,
 		power: irange(0, 1) * State.counter,
 		wind: irange(1, 5) * State.counter,
-		accuracy: irange(90, 100)
+		accuracy: irange(90, 100),
+		price: 2 + irange(1, Math.round(2 * State.counter))
 	}),
 	// Deals earth damage
 	earth: () => ({
@@ -216,21 +223,24 @@ const Spells = {
 			}${choose('ball', 'blast', 'quake')}`,
 		power: irange(1, 3) * State.counter,
 		earth: irange(1, 3) * State.counter,
-		accuracy: irange(70, 100)
+		accuracy: irange(70, 100),
+		price: 2 + irange(1, Math.round(2 * State.counter))
 	}),
 	// Heals
 	heal: () => ({
 		name: `${choose('enchanted ', 'quick ', 'amulet of ')
 			}${choose('healing', 'heart')}`,
 		heal: irange(1, 2) * State.counter,
-		accuracy: irange(80, 100)
+		accuracy: irange(80, 100),
+		price: 2 + irange(1, Math.round(2 * State.counter))
 	}),
 	// Transfers health from opponent
 	transfusion: () => ({
 		name: `${choose(`thief's `, 'deceptive ', 'stolen ', 'selfish ')
 			}${choose('heart', 'healing')}`,
 		transfusion: irange(1, 3) * State.counter,
-		accuracy: irange(90, 100)
+		accuracy: irange(90, 100),
+		price: 2 + irange(1, Math.round(2 * State.counter))
 	}),
 	// // Increases power of attacks
 	// attack: () => ({

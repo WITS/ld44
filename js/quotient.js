@@ -7,6 +7,7 @@ class QuotientState {
 		this.player = null;
 		this.opponent = null;
 		this.messages = [];
+		this.shopMeta = {};
 		// The slices in the current intent
 		this.intent = [];
 		this.slices = [];
@@ -112,23 +113,38 @@ class QuotientState {
 		}
 	}
 
-	startBattle(other) {
+	async startBattle(other, options = {}) {
 		this.status = 'battle';
 		this.player.damage = 1;
 		this.opponent = other;
 		State.opponentNameElement.attr('data-value', cap(other.shortName));
-		State.pushMessage(choose(
-				`You nearly bump into ${other.single}`,
-				`You stop just short of ${other.single}`,
-				`${cap(other.single)} blocks your path`,
-				`You come across ${other.single}`,
-				`Your journey is interrupted by ${other.single}`,
-				`There's ${other.single} directly in front of you`,
-				`You feel the eyes of ${other.single} watching you`,
-				`You turn to meet the watchful face of ${other.single}`
-			), {
-			before: this.intentElement
-		});
+		if (options.isTheft !== true) {
+			State.pushMessage(choose(
+					`You nearly bump into ${other.single}`,
+					`You stop just short of ${other.single}`,
+					`${cap(other.single)} blocks your path`,
+					`You come across ${other.single}`,
+					`Your journey is interrupted by ${other.single}`,
+					`There's ${other.single} directly in front of you`,
+					`You feel the eyes of ${other.single} watching you`,
+					`You turn to meet the watchful face of ${other.single}`
+				), {
+				before: this.intentElement
+			});
+		} else {
+			await other.turn(/*{
+				message: {
+					before: this.intentElement
+				}
+			}*/);
+			// If they killed you already
+			if (this.player.health <= 0) {
+				// Stop here
+				this.pushMessage(`You died`);
+				return;
+			}
+			this.resetIntent();
+		}
 		// Start up the slices
 		const itemCategories = new Map();
 		const slices = [];
@@ -176,6 +192,7 @@ class QuotientState {
 				// Give the player the choice of each item in the category
 				withSlice = new Slice({
 					text: 'with',
+					description: 'with your',
 					next: itemSlices
 				});
 				// Link up to the main category slice
@@ -224,22 +241,7 @@ class QuotientState {
 
 		// Start the player's next turn
 		const slices = this.intent[0].siblings;
-		this.intent.splice(0);
-		const narrator = new Map();
-		for (let child of this.element.children) {
-			if (child === this.intentElement || child === this.slicesElement) {
-				continue;
-			} else {
-				narrator.set(child, Transition.snapshot(child));
-			}
-		}
-		this.intentElement.empty();
-		this.element.insertBefore(this.intentElement, this.slicesElement);
-		for (let [el, snapshot] of narrator) {
-			Transition.from(el, snapshot, 500, {
-				aspectRatio: 'none'
-			});
-		}
+		this.resetIntent();
 		// If the player isn't dead
 		if (this.player.health > 0) {
 			// If the opponent is done for
@@ -333,6 +335,7 @@ class QuotientState {
 	// Handles the next step while shopping
 	async stepShop() {
 		// Parse the intent
+		let type = this.intent[0].text;
 		let item = null;
 		for (let slice of this.intent) {
 			if (slice.item != null) {
@@ -340,7 +343,140 @@ class QuotientState {
 			}
 		}
 
-		// TODO
+		// Done?
+		if (type === 'done') {
+			this.nextEncounter();
+		} else if (type === 'sell') {
+			// Offer to buy it for a reduced price
+			const val = Math.ceil(item.price * 0.75);
+			this.shopMeta = {
+				status: 'sell',
+				item: item,
+				hearts: val
+			};
+			await this.pushMessage(`Hmm... I'll give you ${val} heart${
+				val > 1 ? 's' : ''} for this`);
+			this.resetIntent();
+			await this.showSlices([
+				new Slice({
+					id: 'end',
+					text: 'deal'
+				}),
+				new Slice({
+					id: 'end',
+					text: 'no deal'
+				})
+			]);
+		} else if (type === 'deal' || type === 'no deal') { // Sell: Response
+			// Accept
+			if (type === 'deal') {
+				await this.pushMessage(`Pleasure doing business with you`);
+				const { status, item, hearts } = this.shopMeta;
+				if (status === 'sell') {
+					this.player.health += hearts;
+					this.opponent.addItem(item);
+					this.player.items.splice(this.player.items.indexOf(item), 1);
+				} else {
+					this.player.health -= hearts;
+					this.player.addItem(item);
+					this.opponent.items.splice(this.opponent.items.indexOf(item), 1);
+				}
+			} else {
+				await this.pushMessage(`No worries`);
+			}
+			this.shopMeta = {};
+			await this.pushMessage(`Is there anything else you're interested in?`);
+			this.resetIntent();
+			await this.showSlices(this.shopSlices());
+		} else if (type === 'buy') { // Buy
+			// Offer to sell it for full price
+			this.shopMeta = {
+				status: 'buy',
+				item: item,
+				hearts: item.price,
+				isFullPrice: true
+			};
+			const halfPrice = Math.max(1, Math.floor(item.price * 0.5));
+			await this.pushMessage(`Good choice! That'll cost you ${item.price
+				} heart${item.price > 1 ? 's' : ''}`);
+			this.resetIntent();
+			await this.showSlices([
+				new Slice({
+					text: 'offer to pay',
+					next: [
+						new Slice({
+							text: 'full price'
+						}),
+						new Slice({
+							text: `${halfPrice} heart${halfPrice > 1 ? 's' : ''}`
+						})
+					]
+				}),
+				new Slice({
+					id: 'end',
+					text: 'steal it'
+				}),
+				new Slice({
+					id: 'end',
+					text: 'nevermind'
+				})
+			]);
+		} else if (this.shopMeta.status === 'buy') {
+			// Accept
+			if (type === 'nevermind') {
+				await this.pushMessage(`No worries`);
+			} else if (type === 'steal it') {
+				// Add the item to your inventory
+				const { item } = this.shopMeta;
+				this.player.addItem(item);
+				this.opponent.items.splice(this.opponent.items.indexOf(item), 1);
+				// Start fighting them
+				await this.pushMessage(`You grab the ${item.name}, but the ${
+					this.opponent.name} blocks your path`);
+				this.startBattle(this.opponent, {
+					isTheft: true
+				});
+				return;
+			} else {
+				// If the player offered to pay the previous price
+				const offer = this.intent[1].price;
+				const { item, hearts, isFullPrice } = this.shopMeta;
+				if (offer === hearts || roll() <= 25) {
+					await this.pushMessage(`Pleasure doing business with you`);
+					this.player.health -= offer;
+					this.player.addItem(item);
+					this.opponent.items.splice(this.opponent.items.indexOf(item), 1);
+				} else if (isFullPrice) {
+					if (roll() <= 50) {
+						// Meet the player halfway
+						this.shopMeta.isFullPrice = false;
+						this.shopMeta.hearts = Math.ceil(hearts * 0.75);
+						await this.pushMessage(`I can do ${this.shopMeta.hearts}`);
+					} else {
+						// I'm not going to play this game
+						this.shopMeta.isFullPrice = false;
+						this.shopMeta.hearts = Math.ceil(hearts * 1.2);
+						await this.pushMessage(`How about ${this.shopMeta.hearts}?`);
+					}
+					this.resetIntent();
+					await this.showSlices([
+						new Slice({
+							id: 'end',
+							text: 'deal'
+						}),
+						new Slice({
+							id: 'end',
+							text: 'no deal'
+						})
+					]);
+					return;
+				}
+			}
+			this.shopMeta = {};
+			await this.pushMessage(`Is there anything else you're interested in?`);
+			this.resetIntent();
+			await this.showSlices(this.shopSlices());
+		}
 	}
 
 	// Shows a list of slices
@@ -434,11 +570,32 @@ class QuotientState {
 		}
 	}
 
+	// Resets the intent UI
+	resetIntent() {
+		this.intent.splice(0);
+		const narrator = new Map();
+		for (let child of this.element.children) {
+			if (child === this.intentElement || child === this.slicesElement) {
+				continue;
+			} else {
+				narrator.set(child, Transition.snapshot(child));
+			}
+		}
+		this.intentElement.empty();
+		this.element.insertBefore(this.intentElement, this.slicesElement);
+		for (let [el, snapshot] of narrator) {
+			Transition.from(el, snapshot, 500, {
+				aspectRatio: 'none'
+			});
+		}
+	}
+
 	// Ends a turn
 	endTurn() {
 		// Branch based on status
 		switch (this.status) {
 			case 'battle': this.stepBattle(); break;
+			case 'shop': this.stepShop(); break;
 			default: break;
 		}
 	}
@@ -487,6 +644,7 @@ class Slice {
 		// Associated data
 		this.item = json.item || null;
 		this.part = json.part || null;
+		this.price = json.price || 0;
 		// Slices that can be added after this one
 		this._next = json.next || [];
 		// Whether this slice can be the end of the intent

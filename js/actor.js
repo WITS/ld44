@@ -45,6 +45,10 @@ class Player extends Actor {
 		return 'you';
 	}
 
+	get object() {
+		return 'you';
+	}
+
 	get possessive() {
 		return 'your';
 	}
@@ -82,6 +86,14 @@ class Enemy extends Actor {
 		return true;
 	}
 
+	get object() {
+		switch (this.pronoun) {
+			case 'he': return 'him';
+			case 'she': return 'her';
+			default: return 'it';
+		}
+	}
+
 	get possessive() {
 		switch (this.pronoun) {
 			case 'he': return 'his';
@@ -102,9 +114,9 @@ class Enemy extends Actor {
 		State.opponentHealthElement.attr('data-value', n);
 	}
 
-	async turn() {
+	async turn(options = {}) {
 		// Randomly do a thing
-		await choose(...this.items).use(State.player);
+		await choose(...this.items).use(State.player, null, options);
 	}
 }
 
